@@ -3,7 +3,35 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.185" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_shopping_cart_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_auto_stories_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_close_24_white.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_cloud_download_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_cloud_download_24_white.xml" value="0.185" />
+        <entry key="app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_shopping_basket_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.185" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.185" />
+        <entry key="app/src/main/res/layout/activity_catalogo.xml" value="0.12228260869565218" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_visualiza_imagem.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/cardviewcatalogo.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/cardviewcatalogopagina.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/cardviewprodutoscordenadas.xml" value="0.6450079239302694" />
+        <entry key="app/src/main/res/layout/fragment_catalogo_pagina.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/fragment_enviar_copia_email_dialog.xml" value="0.10190217391304347" />
+        <entry key="app/src/main/res/layout/layout_loading_dialog.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/produtos_cordenadas_fragmentdialog.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/menu/menu_catalogo.xml" value="0.19375" />
+        <entry key="app/src/main/res/menu/menu_catalogo_pagina.xml" value="0.19375" />
+        <entry key="app/src/main/res/menu/menu_catalogo_produto.xml" value="0.19375" />
+        <entry key="app/src/main/res/menu/menu_central.xml" value="0.1398148148148148" />
+        <entry key="app/src/main/res/menu/menu_visualiza_pagina_imagem.xml" value="0.19375" />
       </map>
     </option>
   </component>

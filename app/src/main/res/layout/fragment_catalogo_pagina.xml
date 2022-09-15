@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/txtDescricao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activity_catalogopagina_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/btnSair"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginStart="@dimen/btn_margin_start"
+        android:layout_marginEnd="@dimen/btn_margin_end"
+        android:theme="@style/AppTheme.Button.Sair"/>
+
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

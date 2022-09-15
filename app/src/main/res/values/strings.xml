@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">App Catalogo</string>
+    <string name="app_name">Catalogo</string>
+    <string name="remover_catalogo_atualizar">Deseja remover o catalogo e atualizar?</string>
+    <string name="produto_nao_localizado_cordenada">Nenhum produto localizado nessa cordenada.</string>
+    <string name="produtos_nao_localizado">Nenhum produto localizado.</string>
+    <string name="erro_comnova_tentativa">Erro com nova tentativa</string>
+    <string name="catalogo_sendo_iniciado">Já existe um catalogo sendo iniciado.</string>
+    <string name="arquivo_nao_localizado">Arquivo não localizado.</string>
+    <string name="registros_nao_localizados">"Registro(s) não localizado(s)"</string>
+    <string name="alerta">Alerta</string>
+    <string name="erro_excluir_diretorio">Erro excluir diretorio</string>
+    <string name="erro_conexao_indisponivel">Erro conexão indisponível</string>
+    <string name="sair">Sair</string>
+    <string name="senaoinformadoemail">Se não informado sera enviado e-mail padrão do cadastro.</string>
+    <string name="erro_processo">"Erro no processo"</string>
+    <string name="solicitacao_enviada_servidor">Solicitação enviada para o servidor.</string>
+    <string name="label_catalogos">Catalogos</string>
+    <string name="nao_implementado">Não implementado</string>
+    <string name="atualizar_registros">Atualizar Registros</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

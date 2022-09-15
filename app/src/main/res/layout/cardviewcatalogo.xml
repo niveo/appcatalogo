@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    app:cardCornerRadius="5dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/cardviewcatalogo_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_baseline_auto_stories_24" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cardviewcatalogo_descricao"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical" />
+
+                <ImageButton
+                    android:id="@+id/cardviewcatalogo_menu"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:adjustViewBounds="true"
+                    android:background="?android:selectableItemBackground"
+                    android:gravity="end"
+                    app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+
+                <ProgressBar
+                    android:id="@+id/progressCatalogo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="end"
+                    android:indeterminate="true"
+                    android:padding="2dp"
+                    android:visibility="gone" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/cardviewcatalogo_download"
+                    android:layout_width="16dp"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:visibility="gone"
+                    android:background="?android:selectableItemBackground"
+                    app:srcCompat="@drawable/ic_baseline_cloud_download_24" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/atualizado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_marginEnd="5dp"
+
+                    android:textColor="@color/amber_500" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/mapeados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:gravity="end"
+                android:textColor="@color/amber_500"
+                android:visibility="gone" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>
