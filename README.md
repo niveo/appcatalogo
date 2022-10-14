@@ -12,6 +12,8 @@ Esse é um sistema composto em 3 partes
 <div align="center">
     <img src="/sample/Screenshot_20221014_110324.png" width="200px"</img> 
     <img src="/sample/Screenshot_20221014_110358.png" width="200px"</img> 
+</div>
+<div align="center">
     <img src="/sample/Screenshot_20221014_110412.png" width="200px"</img>
     <img src="/sample/Screenshot_20221014_110425.png" width="200px"</img>
 </div>
