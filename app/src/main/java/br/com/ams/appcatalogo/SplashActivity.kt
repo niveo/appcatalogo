@@ -5,9 +5,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
+import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.DialogsUtils
+import br.com.ams.appcatalogo.view.ConfiguracaoActivity
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.PermissionUtils
+import com.blankj.utilcode.util.SPUtils
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -40,7 +43,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun iniciarMain() {
-        ActivityUtils.startActivity(Intent(this, CatalogoActivity::class.java))
+        if(!SPUtils.getInstance().contains(Constantes.KEY_URL_SERVIDOR) ||
+            SPUtils.getInstance().getString(Constantes.KEY_URL_SERVIDOR) == ""){
+            ActivityUtils.startActivity(Intent(this, ConfiguracaoActivity::class.java))
+        } else {
+            ActivityUtils.startActivity(Intent(this, CatalogoActivity::class.java))
+        }
         finish()
     }
 }

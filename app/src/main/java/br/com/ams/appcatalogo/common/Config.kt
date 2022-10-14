@@ -3,6 +3,7 @@ package br.com.ams.appcatalogo.common
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PathUtils
+import com.blankj.utilcode.util.SPUtils
 
 class Config {
 
@@ -40,7 +41,8 @@ class Config {
             PATH_AMS_CATALOGO = PATH_AMS + FILE_SEP + "catalogo" + FILE_SEP
             PATH_AMS_TEMP = PATH_AMS + FILE_SEP + "tmp" + FILE_SEP
 
-            URL_SERVIDOR = "http://192.168.0.129:8080"
+            URL_SERVIDOR = SPUtils.getInstance()
+                .getString(Constantes.KEY_URL_SERVIDOR, Constantes.URL_SERVIDOR)
 
             Config().criarDiretorios()
         }

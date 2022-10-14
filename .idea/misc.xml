@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_baseline_settings_applications_24_white.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.185" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_shopping_cart_24.xml" value="0.17" />
         <entry key="app/src/main/res/drawable/ic_baseline_auto_stories_24.xml" value="0.17" />
@@ -13,10 +14,12 @@
         <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.17" />
         <entry key="app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.17" />
         <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.17" />
+        <entry key="app/src/main/res/drawable/ic_baseline_settings_applications_24.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/ic_baseline_shopping_basket_24.xml" value="0.17" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.185" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.185" />
         <entry key="app/src/main/res/layout/activity_catalogo.xml" value="0.12228260869565218" />
+        <entry key="app/src/main/res/layout/activity_configuracao.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.12228260869565218" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_visualiza_imagem.xml" value="0.12228260869565218" />

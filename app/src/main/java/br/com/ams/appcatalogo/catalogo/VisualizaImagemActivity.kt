@@ -23,8 +23,6 @@ import com.davemorrissey.labs.subscaleview.ImageSource
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 
-const val KEY_LANCAR_PRODUTO_CATALOGO = "KEY_LANCAR_PRODUTO_CATALOGO"
-
 class VisualizaImagemActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityVisualizaImagemBinding

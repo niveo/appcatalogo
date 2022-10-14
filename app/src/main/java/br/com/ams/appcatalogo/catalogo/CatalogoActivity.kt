@@ -18,6 +18,8 @@ import br.com.ams.appcatalogo.databinding.ActivityCatalogoBinding
 import br.com.ams.appcatalogo.enuns.TipoEnvioEmail
 import br.com.ams.appcatalogo.fragments.EnviarCopiaEmailDialogFragment
 import br.com.ams.appcatalogo.service.AtualizarDadosLocalService
+import br.com.ams.appcatalogo.view.ConfiguracaoActivity
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -193,6 +195,10 @@ class CatalogoActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_central_atualizar_registros -> {
                 onAtualizarRegistros()
+                return true
+            }
+            R.id.menu_central_atualizar_configuracao -> {
+                ActivityUtils.startActivity(ConfiguracaoActivity::class.java)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

@@ -15,9 +15,11 @@
     <string name="erro_processo">"Erro no processo"</string>
     <string name="solicitacao_enviada_servidor">Solicitação enviada para o servidor.</string>
     <string name="label_catalogos">Catalogos</string>
+    <string name="label_configuracao">Configuração</string>
     <string name="nao_implementado">Não implementado</string>
     <string name="atualizar_registros">Atualizar Registros</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="digitosNumberSigned">0123456789</string>
 </resources>
