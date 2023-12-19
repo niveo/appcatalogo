@@ -3,7 +3,7 @@ package br.com.ams.appcatalogo.model
 import androidx.room.Ignore
 import java.util.*
 
-  class CatalogoMapeadosDto {
+  class CatalogoMapeadosDTO {
     var codigo: Long? = null
     var descricao: String? = null
     var observacao: String? = null

@@ -7,7 +7,7 @@ import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.Config
 import br.com.ams.appcatalogo.common.DateTimeUtil
 import br.com.ams.appcatalogo.databinding.CardviewcatalogoBinding
-import br.com.ams.appcatalogo.model.CatalogoMapeadosDto
+import br.com.ams.appcatalogo.model.CatalogoMapeadosDTO
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.squareup.picasso.Picasso
@@ -17,9 +17,9 @@ class CardViewCatalogoAdapter(
     private val onItemTouchListener: OnItemTouchListener
 ) :
     RecyclerView.Adapter<CardViewCatalogoAdapter.ViewHolder>() {
-    private var registros: List<CatalogoMapeadosDto>? = null
+    private var registros: List<CatalogoMapeadosDTO>? = null
 
-    fun carregarRegistros(registros: List<CatalogoMapeadosDto>?) {
+    fun carregarRegistros(registros: List<CatalogoMapeadosDTO>?) {
         this.registros = registros
         this.notifyDataSetChanged()
     }
@@ -39,7 +39,7 @@ class CardViewCatalogoAdapter(
     inner class ViewHolder(val binding: CardviewcatalogoBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun getItem(position: Int): CatalogoMapeadosDto? {
+    fun getItem(position: Int): CatalogoMapeadosDTO? {
         if (registros != null && (position < 0 || position >= registros!!.size)) {
             return null
         } else {

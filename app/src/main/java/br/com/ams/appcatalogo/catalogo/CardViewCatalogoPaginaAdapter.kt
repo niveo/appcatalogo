@@ -8,16 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
 import br.com.ams.appcatalogo.common.DateTimeUtil
 import br.com.ams.appcatalogo.databinding.CardviewcatalogopaginaBinding
-import br.com.ams.appcatalogo.model.CatalogoPaginaMapeadosDto
+import br.com.ams.appcatalogo.model.CatalogoPaginaMapeadosDTO
 import java.io.FileInputStream
 
 class CardViewCatalogoPaginaAdapter(
     private val onItemTouchListener: OnItemTouchListener
 ) :
     RecyclerView.Adapter<CardViewCatalogoPaginaAdapter.ViewHolder>() {
-    private var registros: List<CatalogoPaginaMapeadosDto>? = null
+    private var registros: List<CatalogoPaginaMapeadosDTO>? = null
 
-    fun carregarRegistros(registros: List<CatalogoPaginaMapeadosDto>?) {
+    fun carregarRegistros(registros: List<CatalogoPaginaMapeadosDTO>?) {
         this.registros = registros
         this.notifyDataSetChanged()
     }
@@ -41,7 +41,7 @@ class CardViewCatalogoPaginaAdapter(
         return if (registros == null) 0 else registros!!.size
     }
 
-    fun obterRegistro(position: Int): CatalogoPaginaMapeadosDto {
+    fun obterRegistro(position: Int): CatalogoPaginaMapeadosDTO {
         return this.registros!!.get(position)
     }
 

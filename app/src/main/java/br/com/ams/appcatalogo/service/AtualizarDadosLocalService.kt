@@ -64,7 +64,7 @@ class AtualizarDadosLocalService {
                             catalogo.dataAlterado
                         )
                     )
-                    catalogo.catalogoPaginas?.forEach { catalogoPagina ->
+                    catalogo.paginas?.forEach { catalogoPagina ->
                         LogUtils.d(catalogoPagina.pagina)
                         newCatalogoPagina.add(
                             CatalogoPagina(
@@ -74,7 +74,7 @@ class AtualizarDadosLocalService {
                                 catalogoPagina.dataAlterado
                             )
                         )
-                        catalogoPagina.catalogoPaginaProdutos?.forEach { catalogoPaginaProduto ->
+                        catalogoPagina.mapeados?.forEach { catalogoPaginaProduto ->
                             newCatalogoPaginaProdito.add(
                                 CatalogoPaginaProduto(
                                     catalogoPaginaProduto.codigo,

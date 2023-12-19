@@ -1,11 +1,8 @@
 package br.com.ams.appcatalogo.model
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
-import br.com.ams.appcatalogo.entity.Produto
 import java.util.*
 
-class ProdutoJson(
+class ProdutoDTO(
     val codigo: Long,
     val referencia: String?,
     val descricao: String?,

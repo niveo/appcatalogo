@@ -8,7 +8,7 @@ import br.com.ams.appcatalogo.common.Config
 import br.com.ams.appcatalogo.common.CustomException
 import br.com.ams.appcatalogo.common.DateTimeUtil
 import br.com.ams.appcatalogo.common.DialogsUtils
-import br.com.ams.appcatalogo.model.CatalogoPaginaMapeadosDto
+import br.com.ams.appcatalogo.model.CatalogoPaginaMapeadosDTO
 import br.com.ams.appcatalogo.retrofit.RetrofitConfig
 import com.blankj.utilcode.util.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -142,7 +142,7 @@ class CatalogoServiceWorker(var appContext: Context, workerParams: WorkerParamet
 
     private fun validarRegistros(
         codigoCatalogo: Long,
-        registros: List<CatalogoPaginaMapeadosDto>,
+        registros: List<CatalogoPaginaMapeadosDTO>,
         dirCatalogo: File,
         sucess: () -> Unit, error: (error: Throwable) -> Unit
     ) {

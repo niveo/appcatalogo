@@ -4,7 +4,7 @@ Esse sistema tem o intuito de mapear os produtos em um catalogo com suas cordena
 
 ## Notas
 Esse é um sistema composto em 3 partes
-* [BackEnd](https://github.com/niveo/backcatalogo) Java Spring Boot
+* [BackEnd](https://github.com/niveo/catalogobackend) NestJS
 * [FrontEnd](https://github.com/niveo/froncatalogo) Angular
 * [Aplicativo](https://github.com/niveo/appcatalogo) Android
 
