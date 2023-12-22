@@ -38,8 +38,7 @@ class Config {
             PATH_AMS = PATH_LOCAL + FILE_SEP + "appcatalogo"
             PATH_AMS_TEMP = PATH_AMS + FILE_SEP + "tmp" + FILE_SEP
 
-            URL_SERVIDOR = SPUtils.getInstance()
-                .getString(Constantes.KEY_URL_SERVIDOR, Constantes.URL_SERVIDOR)
+            URL_SERVIDOR = Constantes.URL_SERVIDOR
 
             Config().criarDiretorios()
         }

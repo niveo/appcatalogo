@@ -64,11 +64,11 @@ class ProdutosCordenadasFragmentDialog : BottomSheetDialogFragment() {
     }
 
     fun carregarTransacao(produtos: LongArray) {
-        TaskObserver.runInSingle(requireContext(), {
+        /*TaskObserver.runInSingle(requireContext(), {
             ApplicationLocate.instance.dataBase!!.produtoDao()
                 .obterProdutoCodigos(produtos.asList())
         }, {
-            if (it.isNullOrEmpty()) {
+            if (it.) {
                 ToastUtils.showLong(getString(R.string.registros_nao_localizados))
                 dismiss()
             } else {
@@ -76,7 +76,7 @@ class ProdutosCordenadasFragmentDialog : BottomSheetDialogFragment() {
             }
         }, {
             Funcoes.alertaThrowable(it)
-        }, true)
+        }, true)*/
     }
 
     fun openDialog(fm: FragmentManager) {

@@ -10,6 +10,8 @@ import br.com.ams.appcatalogo.dao.ProdutoDao
 import br.com.ams.appcatalogo.databinding.ActivityMainBinding
 import br.com.ams.appcatalogo.entity.Produto
 import br.com.ams.appcatalogo.repository.ProdutoRepository
+import br.com.ams.appcatalogo.service.AtualizarDadosLocalService
+import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorker
 import com.auth0.android.Auth0
 import com.blankj.utilcode.util.LogUtils
 import com.davemorrissey.labs.subscaleview.ImageSource
@@ -29,65 +31,18 @@ class MainActivity : AppCompatActivity() {
     public lateinit var productDao: ProdutoRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         ApplicationLocate.component.inject(this)
 
 
-        productDao.insertAll(Produto(1, "A", "B", 0.0))
-        //productDao.getAll().observe(this, object : Observer<Produto> { })
-    }
 
-    fun teste() {
-        account = Auth0(
-            getString(R.string.com_auth0_client_id),
-            getString(R.string.com_auth0_domain)
-        )
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val gestureDetector =
-            GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
-                override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-
-                    if (binding.imageView2.isReady) {
-
-                        val sCoord: PointF =
-                            binding.imageView2.viewToSourceCoord(e.x, e.y)!!
-
-
-                    }
-
-                    return true
-                }
-
-            })
-
-        binding.imageView2.setOnTouchListener { _, event ->
-            gestureDetector.onTouchEvent(
-                event
-            )
+        binding.button.setOnClickListener {
+            AtualizarDadosServiceWorker.iniciar(this)
         }
 
-        TaskObserver.runInSingle(this, {
-            ImageKit.getInstance()
-                .url(
-                    path = "1_zszxAdxQV",
-                    transformationPosition = TransformationPosition.QUERY,
-                    urlEndpoint = "https://ik.imagekit.io/aspofp9v1/catalogo/catalogos/993b612a-f8bd-4853-a769-00a377fb1720/paginas/"
-                )
-                .createWithPicasso()
-                .error(R.drawable.ic_baseline_add_shopping_cart_24)
-                .get()
-        }, { result ->
-            binding.imageView2.setImage(
-                ImageSource.bitmap(
-                    result!!
-                )
-            )
-        }, { error ->
-            LogUtils.e(error)
-        })
+        //productDao.insertAll(Produto(1, "A", "B", 0.0))
+        //productDao.getAll().observe(this, object : Observer<Produto> { })
     }
-
-
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.StrictMode
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.DialogsUtils
@@ -27,9 +28,18 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        val policy = StrictMode.ThreadPolicy.Builder()
+            .permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
+
+        //LIBERA IMAGENS
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+
         account = Auth0(
             getString(R.string.com_auth0_client_id),
-            getString(R.string.com_auth0_domain)
+            getString(R.string.com_auth0_domain),
         )
 
         if (Build.VERSION.SDK_INT >= 23) {
@@ -94,7 +104,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun iniciarMain() {
-        if(!SPUtils.getInstance().getString(Constantes.KEY_TOKEN_BEARER,"").isNullOrBlank()){
+        // loginWithBrowser()
+        if (!SPUtils.getInstance().getString(Constantes.KEY_TOKEN_BEARER, "").isNullOrBlank()) {
             carregarViewPrincipal()
         } else {
             loginWithBrowser()
@@ -106,6 +117,7 @@ class SplashActivity : AppCompatActivity() {
         WebAuthProvider.login(account)
             .withScheme(getString(R.string.com_auth0_scheme))
             .withScope("openid profile email read:current_user update:current_user_metadata")
+            .withAudience(getString(R.string.com_auth0_audience))
             //.withAudience("https://${getString(R.string.com_auth0_domain)}/api/v2/")
             // Launch the authentication passing the callback where the results will be received
             .start(this, object : Callback<Credentials, AuthenticationException> {
@@ -119,22 +131,26 @@ class SplashActivity : AppCompatActivity() {
                 override fun onSuccess(credentials: Credentials) {
                     // Get the access token from the credentials object.
                     // This can be used to call APIs
-                    val accessToken = credentials.accessToken
-                    SPUtils.getInstance().put(Constantes.KEY_TOKEN_BEARER, accessToken)
+                    LogUtils.w(credentials.accessToken)
+                    LogUtils.w(credentials.idToken)
+                    LogUtils.w(credentials.user.getId())
+                    SPUtils.getInstance().put(Constantes.KEY_TOKEN_BEARER, credentials.accessToken)
+                    SPUtils.getInstance()
+                        .put(Constantes.KEY_TOKEN_USER_ID, credentials.user.getId())
                     carregarViewPrincipal()
                 }
             })
     }
 
-    private fun carregarViewPrincipal(){
+    private fun carregarViewPrincipal() {
         finish()
-        ActivityUtils.startActivity(CatalogoActivity::class.java)
+        ActivityUtils.startActivity(MainActivity::class.java)
     }
 
     private fun logout() {
         WebAuthProvider.logout(account)
             .withScheme("demo")
-            .start(this, object: Callback<Void?, AuthenticationException> {
+            .start(this, object : Callback<Void?, AuthenticationException> {
                 override fun onSuccess(payload: Void?) {
                     // The user has been logged out!
                 }

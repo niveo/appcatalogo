@@ -77,15 +77,13 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
 
-    //ROOM
     implementation ("androidx.room:room-ktx:$room_version")
     implementation ("androidx.room:room-runtime:$room_version")
     kapt ("androidx.room:room-compiler:$room_version")
     implementation ("androidx.room:room-rxjava3:$room_version")
 
-    //dagger
-    kapt ("com.google.dagger:dagger-compiler:$dagger_version")
-    implementation ("com.google.dagger:dagger:$dagger_version")
+    implementation ("com.google.dagger:dagger:2.50")
+    kapt ("com.google.dagger:dagger-compiler:2.50")
 
     implementation ("com.auth0.android:auth0:2.+")
 

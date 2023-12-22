@@ -5,7 +5,7 @@ import br.com.ams.appcatalogo.dao.ProdutoDao
 import br.com.ams.appcatalogo.entity.Produto
 import javax.inject.Inject
 
-class ProdutoDataSource(@Inject val produtoDao: ProdutoDao) : ProdutoRepository {
+class ProdutoDataSource @Inject constructor( var produtoDao: ProdutoDao) : ProdutoRepository {
     override fun obterProdutoCodigos(ids: List<Long>): LiveData<Produto> {
         return this.produtoDao.obterProdutoCodigos(ids)
     }

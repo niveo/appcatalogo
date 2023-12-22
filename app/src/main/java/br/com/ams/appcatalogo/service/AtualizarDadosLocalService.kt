@@ -1,32 +1,40 @@
 package br.com.ams.appcatalogo.service
 
 import android.content.Context
-import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.CustomException
-import br.com.ams.appcatalogo.entity.Catalogo
-import br.com.ams.appcatalogo.entity.CatalogoPagina
-import br.com.ams.appcatalogo.entity.CatalogoPaginaMapeamento
-import br.com.ams.appcatalogo.entity.Produto
 import br.com.ams.appcatalogo.retrofit.RetrofitConfig
+import com.blankj.utilcode.util.FileIOUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.NetworkUtils
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import java.io.File
 
-class AtualizarDadosLocalService {
-    fun iniciar(context: Context, onSucesso: () -> Unit, onError: (e: Throwable) -> Unit) {
+class AtualizarDadosLocalService(
+    val context: Context,
+    val onSucesso: () -> Unit,
+    val onError: (e: Throwable) -> Unit
+) {
+    fun iniciar() {
 
         if (!NetworkUtils.isConnected()) {
             onError(CustomException(context.getString(R.string.erro_conexao_indisponivel)))
             return
         }
 
+        baixarArquivo()
     }
 
-    private fun baixarArquivo(){
-        //RetrofitConfig.instance.getCargaArquivo().obterCarga().
+    private fun baixarArquivo() {
+        val newFile = File("/tmp/file.zip")
+
+        val cag = RetrofitConfig.instance.getCargaArquivo().obterCarga()
+        val execute = cag.execute()
+        if(execute.isSuccessful){
+            LogUtils.w(execute.message())
+            FileIOUtils.writeFileFromIS(newFile,execute.body()!!.byteStream())
+        }
+        //  val isStream =  cag.byteStream()
+        // FileIOUtils.writeFileFromIS(File(""),isStream)
     }
 
 }

@@ -12,6 +12,6 @@ interface CatalogoDao  {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
       fun insertAll(vararg values: Catalogo)
 
-    @Query("")
+    @Query("SELECT * FROM catalogo")
     fun carregarCatalogos(): List<CatalogoDTO>
 }

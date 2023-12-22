@@ -37,7 +37,7 @@ class RoomModule(mApplication: Application) {
 
     @Singleton
     @Provides
-    fun providesProductDao(produtoDao: ProdutoDao): ProdutoRepository {
+    fun produtoRepository(produtoDao: ProdutoDao): ProdutoRepository {
         return ProdutoDataSource(produtoDao)
     }
 }
