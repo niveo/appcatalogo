@@ -3,26 +3,44 @@ package br.com.ams.appcatalogo
 import android.app.Application
 import androidx.room.Room
 import br.com.ams.appcatalogo.database.AppDatabase
+import br.com.ams.appcatalogo.di.AppComponent
+import br.com.ams.appcatalogo.di.AppModule
+import br.com.ams.appcatalogo.di.DaggerAppComponent
+import br.com.ams.appcatalogo.di.RoomModule
 import com.blankj.utilcode.util.LogUtils
+import com.imagekit.android.ImageKit
+import com.imagekit.android.entity.TransformationPosition
+import com.imagekit.android.entity.UploadPolicy
 
 class ApplicationLocate : Application() {
-
-    lateinit var dataBase: AppDatabase
+    var dataBase: AppDatabase? = null
 
     override fun onCreate() {
         super.onCreate()
 
         instance = this
 
-        dataBase = Room.databaseBuilder(
-            this,
-            AppDatabase::class.java, "db-catalogo"
-        ).allowMainThreadQueries().build()
+        component = DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .roomModule(RoomModule(this))
+            .build()
+
+        ImageKit.init(
+            context = applicationContext,
+            publicKey = getString(R.string.imagekit_publickey),
+            urlEndpoint = getString(R.string.imagekit_endpoint),
+            transformationPosition = TransformationPosition.PATH,
+            defaultUploadPolicy = UploadPolicy.Builder()
+                .requireNetworkType(UploadPolicy.NetworkType.ANY)
+                .maxRetries(3)
+                .build()
+        )
 
         com.blankj.utilcode.util.Utils.init(this)
         initLog()
 
     }
+
 
     fun initLog() {
         val config = LogUtils.getConfig()
@@ -52,6 +70,9 @@ class ApplicationLocate : Application() {
 
     companion object {
         lateinit var instance: ApplicationLocate
+            private set
+
+        lateinit var component: AppComponent
             private set
     }
 }

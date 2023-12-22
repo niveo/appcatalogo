@@ -5,5 +5,7 @@ object Constantes {
     const val TIME_OUT_CONEXAO = 30
 
     const val KEY_URL_SERVIDOR = "URL_SERVIDOR"
-    const val URL_SERVIDOR = "http://192.168.0.129:8080"
+    const val URL_SERVIDOR = "https://catalogobackend.vercel.app"
+
+    const val KEY_TOKEN_BEARER = "TOKEN_BEARER"
 }

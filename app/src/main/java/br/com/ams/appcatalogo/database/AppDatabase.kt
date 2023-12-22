@@ -9,11 +9,18 @@ import br.com.ams.appcatalogo.dao.CatalogoPaginaProdutoDao
 import br.com.ams.appcatalogo.dao.ProdutoDao
 import br.com.ams.appcatalogo.entity.Catalogo
 import br.com.ams.appcatalogo.entity.CatalogoPagina
-import br.com.ams.appcatalogo.entity.CatalogoPaginaProduto
+import br.com.ams.appcatalogo.entity.CatalogoPaginaMapeamento
+import br.com.ams.appcatalogo.entity.CatalogoPaginaMapeamentoProduto
 import br.com.ams.appcatalogo.entity.Produto
 
 @Database(
-    entities = [Produto::class, Catalogo::class, CatalogoPagina::class, CatalogoPaginaProduto::class],
+    entities = [
+        Produto::class,
+        Catalogo::class,
+        CatalogoPagina::class,
+        CatalogoPaginaMapeamento::class,
+        CatalogoPaginaMapeamentoProduto::class
+    ],
     version = 1
 )
 @TypeConverters(value = [Converters::class])

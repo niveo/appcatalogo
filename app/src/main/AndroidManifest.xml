@@ -19,10 +19,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:noHistory="true"
-            android:label="@string/label_configuracao"
+            android:name=".MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity
             android:name=".view.ConfiguracaoActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/label_configuracao"
+            android:noHistory="true" />
         <activity
             android:name=".SplashActivity"
             android:alwaysRetainTaskState="true"

@@ -4,11 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "CatalogoPaginaProduto")
-class CatalogoPaginaProduto(
-    @PrimaryKey val codigo: Long,
-    @ColumnInfo(name = "codigoCatalogoPagina") val codigoCatalogoPagina: Long?,
-    @ColumnInfo(name = "codigoProduto") val codigoProduto: Long?,
+
+@Entity(tableName = "CatalogoPaginaMapeamento")
+class CatalogoPaginaMapeamento(
+    @PrimaryKey val id: Long,
+    @ColumnInfo(name = "catalogoPaginaId") val catalogoPaginaId: Long?,
     @ColumnInfo(name = "inicialPosicalX") val inicialPosicalX: Float?,
     @ColumnInfo(name = "finalPosicalX") val finalPosicalX: Float?,
     @ColumnInfo(name = "inicialPosicalY") val inicialPosicalY: Float?,

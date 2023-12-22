@@ -1,13 +1,14 @@
 package br.com.ams.appcatalogo.model
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 import java.util.*
 import kotlin.collections.ArrayList
 
 class CatalogoDTO(
-    val codigo: Long,
-    val descricao: String?,
-    val observacao: String?,
-    val imagemUrl: String?,
-    var dataCadastrado: Date? = null,
-    var dataAlterado: Date? = null,
-    var paginas: ArrayList<CatalogoPaginaDTO>? = null
+    var id: Long,
+    var descricao: String?,
+    var titulo: String?,
+    var logo: String?,
+    var avatar: String?,
+    //var paginas: ArrayList<CatalogoPaginaDTO>? = null
 )

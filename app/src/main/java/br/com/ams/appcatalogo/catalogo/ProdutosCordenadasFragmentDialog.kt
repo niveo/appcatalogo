@@ -65,7 +65,7 @@ class ProdutosCordenadasFragmentDialog : BottomSheetDialogFragment() {
 
     fun carregarTransacao(produtos: LongArray) {
         TaskObserver.runInSingle(requireContext(), {
-            ApplicationLocate.instance.dataBase.produtoDao()
+            ApplicationLocate.instance.dataBase!!.produtoDao()
                 .obterProdutoCodigos(produtos.asList())
         }, {
             if (it.isNullOrEmpty()) {

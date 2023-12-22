@@ -95,8 +95,8 @@ class VisualizaImagemActivity : AppCompatActivity() {
         codigoCatalogoPagina: Long,
         sCoord: PointF
     ) {
-        TaskObserver.runInSingle(this, {
-            ApplicationLocate.instance.dataBase
+        /*TaskObserver.runInSingle(this, {
+            ApplicationLocate.getInstance().dataBase
                 .catalogoPaginaProdutoDao()
                 .obterIdProduto( codigoCatalogo,
                     codigoCatalogoPagina,
@@ -114,6 +114,6 @@ class VisualizaImagemActivity : AppCompatActivity() {
             }
         }, {
             Funcoes.alertaThrowable(it)
-        }, true)
+        }, true)*/
     }
 }

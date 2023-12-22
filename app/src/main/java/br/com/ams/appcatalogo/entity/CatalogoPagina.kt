@@ -8,8 +8,11 @@ import java.util.*
 
 @Entity(tableName = "CatalogoPagina")
 class CatalogoPagina(
-    @PrimaryKey val codigo: Long,
+    @PrimaryKey val id: Long,
+    @ColumnInfo(name = "catalogoId") val catalogoId: Long?,
     @ColumnInfo(name = "pagina") val pagina: Int?,
-    @ColumnInfo(name = "codigoCatalogo") val codigoCatalogo: Long?,
-    @ColumnInfo(name = "dataAlterado") val dataAlterado: Date? = null,
+    @ColumnInfo(name = "size") val size: Int?,
+    @ColumnInfo(name = "height") val height: Int?,
+    @ColumnInfo(name = "width") val width: Int?,
+    @ColumnInfo(name = "name") val name: String?,
 )

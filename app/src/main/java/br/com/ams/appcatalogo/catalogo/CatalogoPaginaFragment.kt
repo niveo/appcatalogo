@@ -3,7 +3,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -13,7 +12,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
-import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
 import br.com.ams.appcatalogo.common.Funcoes
 import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.FragmentCatalogoPaginaBinding
@@ -83,16 +81,16 @@ class CatalogoPaginaFragment : DialogFragment() {
             CardViewCatalogoPaginaAdapter(
                 object : CardViewCatalogoPaginaAdapter.OnItemTouchListener {
                     override fun onDetalhar(view: View, position: Int) {
-                        val registro = cardViewCatalogoAdapter!!.obterRegistro(position)
+                        /*val registro = cardViewCatalogoAdapter!!.obterRegistro(position)
                         val fileCatalogo = UtilCatalogo.arquivoCatalogo(registro)
                         val intent = Intent(
                             this@CatalogoPaginaFragment.context,
                             VisualizaImagemActivity::class.java
                         )
                         intent.putExtra("KEY_LOCAL_FILE_CATALOGO", fileCatalogo.toString())
-                        intent.putExtra("KEY_CODIGO_CATALOGO", registro.codigoCatalogo)
-                        intent.putExtra("KEY_CODIGO_CATALOGO_PAGINA", registro.codigo)
-                        startActivity(intent)
+                        intent.putExtra("KEY_CODIGO_CATALOGO", registro.catalogoId)
+                        intent.putExtra("KEY_CODIGO_CATALOGO_PAGINA", registro.id)
+                        startActivity(intent)*/
                     }
 
                     override fun onMenu(v: View?, absoluteAdapterPosition: Int) {
@@ -101,8 +99,8 @@ class CatalogoPaginaFragment : DialogFragment() {
                         showMenu(
                             v!!,
                             R.menu.menu_catalogo_pagina,
-                            registro.codigoCatalogo!!,
-                            registro.codigo!!
+                            registro.catalogoId!!,
+                            registro.id!!
                         )
                     }
                 })
@@ -161,7 +159,7 @@ class CatalogoPaginaFragment : DialogFragment() {
 
     private fun GetRegistros() {
         TaskObserver.runInSingle(requireContext(), {
-            ApplicationLocate.instance.dataBase.catalogoPaginaDao()
+            ApplicationLocate.instance.dataBase!!.catalogoPaginaDao()
                 .obterCatalogoPaginaMapeados(codigoCatalogoSelecionado!!)
         }, {
             cardViewCatalogoAdapter!!.carregarRegistros(it)

@@ -1,23 +1,19 @@
 package br.com.ams.appcatalogo.catalogo
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
-import br.com.ams.appcatalogo.common.DateTimeUtil
 import br.com.ams.appcatalogo.databinding.CardviewcatalogopaginaBinding
-import br.com.ams.appcatalogo.model.CatalogoPaginaMapeadosDTO
-import java.io.FileInputStream
+import br.com.ams.appcatalogo.model.CatalogoPaginaDTO
 
 class CardViewCatalogoPaginaAdapter(
     private val onItemTouchListener: OnItemTouchListener
 ) :
     RecyclerView.Adapter<CardViewCatalogoPaginaAdapter.ViewHolder>() {
-    private var registros: List<CatalogoPaginaMapeadosDTO>? = null
+    private var registros: List<CatalogoPaginaDTO>? = null
 
-    fun carregarRegistros(registros: List<CatalogoPaginaMapeadosDTO>?) {
+    fun carregarRegistros(registros: List<CatalogoPaginaDTO>?) {
         this.registros = registros
         this.notifyDataSetChanged()
     }
@@ -41,7 +37,7 @@ class CardViewCatalogoPaginaAdapter(
         return if (registros == null) 0 else registros!!.size
     }
 
-    fun obterRegistro(position: Int): CatalogoPaginaMapeadosDTO {
+    fun obterRegistro(position: Int): CatalogoPaginaDTO {
         return this.registros!!.get(position)
     }
 
@@ -54,29 +50,6 @@ class CardViewCatalogoPaginaAdapter(
         with(holder) {
             with(registros!![position]) {
                 binding.cardviewcatalogopaginaPagina.text = pagina.toString()
-                binding.cardviewcatalogopaginaAlterado.text =
-                    DateTimeUtil.dataTimePatterBR(dataAlterado)
-                binding.cardviewcatalogopaginaMapeados.text = if (contaMapeados!! > 0) {
-                    "Mapeados: " + contaMapeados
-                } else {
-                    ""
-                }
-
-                val fileCatalogo = UtilCatalogo.arquivoCatalogo(this)
-
-                if (fileCatalogo.exists() && fileCatalogo.isFile) {
-
-                    val fis = FileInputStream(fileCatalogo)
-                    val options = BitmapFactory.Options()
-                    options.inPreferredConfig = Bitmap.Config.RGB_565
-                    val myBitmap = BitmapFactory.decodeStream(fis, null, options)
-
-                    //val myBitmap: Bitmap = ImageUtils.getBitmap(fileCatalogo)
-                    binding.cardviewcatalogopaginaImg.setImageBitmap(myBitmap)
-
-                } else {
-                    binding.cardviewcatalogopaginaImg.setImageDrawable(null)
-                }
             }
             binding.cardviewcatalogopaginaMenu.setOnClickListener {
                 onItemTouchListener.onMenu(

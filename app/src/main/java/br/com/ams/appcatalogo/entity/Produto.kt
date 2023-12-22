@@ -7,10 +7,8 @@ import java.util.*
 
 @Entity(tableName = "Produto")
 class Produto(
-    @PrimaryKey val codigo: Long,
+    @PrimaryKey val id: Long,
     @ColumnInfo(name = "referencia") val referencia: String?,
     @ColumnInfo(name = "descricao") val descricao: String?,
-    @ColumnInfo(name = "dataCadastrado") var dataCadastrado: Date? = null,
-    @ColumnInfo(name = "dataAlterado") var dataAlterado: Date? = null,
-    @ColumnInfo(name = "valor") var valor: Double? = null,
+    @ColumnInfo(name = "valor") val valor: Double?
 )

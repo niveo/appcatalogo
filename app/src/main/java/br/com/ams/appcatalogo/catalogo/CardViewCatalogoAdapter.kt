@@ -7,7 +7,7 @@ import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.Config
 import br.com.ams.appcatalogo.common.DateTimeUtil
 import br.com.ams.appcatalogo.databinding.CardviewcatalogoBinding
-import br.com.ams.appcatalogo.model.CatalogoMapeadosDTO
+import br.com.ams.appcatalogo.model.CatalogoDTO
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.squareup.picasso.Picasso
@@ -17,9 +17,9 @@ class CardViewCatalogoAdapter(
     private val onItemTouchListener: OnItemTouchListener
 ) :
     RecyclerView.Adapter<CardViewCatalogoAdapter.ViewHolder>() {
-    private var registros: List<CatalogoMapeadosDTO>? = null
+    private var registros: List<CatalogoDTO>? = null
 
-    fun carregarRegistros(registros: List<CatalogoMapeadosDTO>?) {
+    fun carregarRegistros(registros: List<CatalogoDTO>?) {
         this.registros = registros
         this.notifyDataSetChanged()
     }
@@ -39,7 +39,7 @@ class CardViewCatalogoAdapter(
     inner class ViewHolder(val binding: CardviewcatalogoBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun getItem(position: Int): CatalogoMapeadosDTO? {
+    fun getItem(position: Int): CatalogoDTO? {
         if (registros != null && (position < 0 || position >= registros!!.size)) {
             return null
         } else {
@@ -47,13 +47,9 @@ class CardViewCatalogoAdapter(
         }
     }
 
-    fun progressRegistro(progress: Boolean, position: Int) {
-        registros!!.get(position).progress = progress
-        notifyItemChanged(position)
-    }
 
     override fun getItemId(position: Int): Long {
-        return registros!!.get(position).codigo!!
+        return registros!!.get(position).id!!
     }
 
     override fun getItemCount(): Int {
@@ -69,30 +65,8 @@ class CardViewCatalogoAdapter(
         with(holder) {
             with(registros!![position]) {
                 binding.cardviewcatalogoDescricao.text = descricao
-                binding.atualizado.text = DateTimeUtil.dataTimePatterBR(dataAlterado)
 
-                if (File(Config.PATH_AMS_CATALOGO + Config.FILE_SEP + this.codigo).exists()) {
-                    binding.cardviewcatalogoDownload.visibility = View.GONE
-                } else {
-                    binding.cardviewcatalogoDownload.visibility = View.VISIBLE
-                }
-
-                if (progress) {
-                    binding.progressCatalogo.visibility = View.VISIBLE
-                    binding.cardviewcatalogoMenu.visibility = View.GONE
-                } else {
-                    binding.progressCatalogo.visibility = View.GONE
-                    binding.cardviewcatalogoMenu.visibility = View.VISIBLE
-                }
-
-                if (mapeados != null && mapeados!! > 0) {
-                    binding.mapeados.visibility = View.VISIBLE
-                    binding.mapeados.text = "Mapeados: ${mapeados}"
-                } else {
-                    binding.mapeados.visibility = View.GONE
-                }
-
-                imagemUrl?.let {
+               /* imagemUrl?.let {
                     var url: String = imagemUrl!!
                     if (!imagemUrl!!.startsWith("http")) {
                         url = Config.URL_SERVIDOR + "/" + imagemUrl
@@ -108,7 +82,7 @@ class CardViewCatalogoAdapter(
                     } catch (e: Exception) {
                         LogUtils.e(e)
                     }
-                }
+                }*/
             }
             binding.cardviewcatalogoMenu.setOnClickListener {
                 onItemTouchListener.onMenu(

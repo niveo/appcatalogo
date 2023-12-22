@@ -22,4 +22,11 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="digitosNumberSigned">0123456789</string>
+
+    <string name="com_auth0_client_id">trBD6NNejPBz5QWCSzfPr2z1NY1j6BLr</string>
+    <string name="com_auth0_domain">dev-e68si34s5lecmupl.us.auth0.com</string>
+    <string name="com_auth0_scheme">demo</string>
+
+    <string name="imagekit_publickey">public_T+f1go8ZY0QaMaAj4kIWJLLsIfU=</string>
+    <string name="imagekit_endpoint">https://ik.imagekit.io/aspofp9v1</string>
 </resources>
