@@ -11,8 +11,8 @@ object UtilCatalogo {
         EventBus.getDefault().post(
             MessageBusIdentificador(
                 Constantes.NT_CONSULTA_PRODUTO, bundleOf(
-                    "CATAOGO_ID" to catalogoId,
-                    "CATAOGO_PAGINA_ID" to catalogoIdPagina,
+                    "CATALOGO_ID" to catalogoId,
+                    "CATALOGO_PAGINA_ID" to catalogoIdPagina,
                 )
             )
         )

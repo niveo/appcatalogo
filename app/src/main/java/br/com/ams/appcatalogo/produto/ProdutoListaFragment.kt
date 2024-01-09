@@ -9,6 +9,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.CatalogoPaginaFragment
+import br.com.ams.appcatalogo.common.Funcoes
+import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.FragmentProdutoListaBinding
 import br.com.ams.appcatalogo.repository.ProdutoRepository
 import com.blankj.utilcode.util.LogUtils
@@ -23,7 +25,7 @@ class ProdutoListaFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            carregarRegistros()
         }
     }
 
@@ -54,5 +56,15 @@ class ProdutoListaFragment : DialogFragment() {
             ProdutoListaFragment().apply {
                 arguments = bundle
             }
+    }
+
+    private fun carregarRegistros() {
+        TaskObserver.runInSingle(requireContext(), {
+            //produtoRepository.obterProdutoCatalogo()
+        }, {
+
+        }, {
+            Funcoes.alertaThrowable(it)
+        }, true)
     }
 }

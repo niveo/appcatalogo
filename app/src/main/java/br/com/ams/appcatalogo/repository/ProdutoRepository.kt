@@ -6,5 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProdutoRepository {
     fun obterProdutoCodigos(ids: List<Long>): List<Produto>
+
+    fun obterProdutoCatalogo(idCatalogo: Long): List<Produto>
+
+    fun obterProdutoCatalogoPagina(idCatalogo: Long, idCatalogoPagina: Long): List<Produto>
+
     fun getAll(): List<Produto>
 }
