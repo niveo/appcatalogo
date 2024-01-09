@@ -12,5 +12,4 @@ object Constantes {
 
     const val NT_CONSULTA_PRODUTO = "NT_CONSULTA_PRODUTO"
 
-    const val VIEW_CONSULTA_PRODUTO = "br.com.ams.appcatalogo.produto.ProdutoActivity"
 }

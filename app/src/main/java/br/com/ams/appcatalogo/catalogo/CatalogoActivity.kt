@@ -7,12 +7,14 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.work.WorkManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.*
 import br.com.ams.appcatalogo.databinding.ActivityCatalogoBinding
 import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
+import br.com.ams.appcatalogo.produto.ProdutoListaFragment
 import br.com.ams.appcatalogo.repository.CatalogoRepository
 import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorker
 import com.blankj.utilcode.util.ActivityUtils
@@ -82,7 +84,8 @@ class CatalogoActivity : AppCompatActivity() {
     fun onMessageEventMainCentralActivity(event: MessageBusIdentificador) {
         when (event.identificador) {
             Constantes.NT_CONSULTA_PRODUTO -> {
-                carregarMenu(Constantes.VIEW_CONSULTA_PRODUTO, event.bundle)
+                ProdutoListaFragment.newInstance(event.bundle)
+                    .openDialog(supportFragmentManager)
             }
 
             else -> {
@@ -92,13 +95,6 @@ class CatalogoActivity : AppCompatActivity() {
         }
     }
 
-    private fun carregarMenu(action: String, bundle: Bundle? = null) {
-        val intent = Intent(action)
-        if (bundle != null) {
-            intent.replaceExtras(bundle)
-        }
-        ActivityUtils.startActivity(intent)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
