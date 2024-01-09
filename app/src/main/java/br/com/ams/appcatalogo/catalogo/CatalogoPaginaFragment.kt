@@ -1,8 +1,10 @@
 package br.com.ams.appcatalogo.catalogo
+
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -12,55 +14,63 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
+import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
 import br.com.ams.appcatalogo.common.Funcoes
 import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.FragmentCatalogoPaginaBinding
+import br.com.ams.appcatalogo.repository.CatalogoPaginaRepository
+import javax.inject.Inject
 
 private const val PARAM_CODIGO: String = "PARAM_CODIGO"
 private const val PARAM_DESCRICAO: String = "PARAM_DESCRICAO"
+private const val PARAM_IDENTIFICADOR: String = "PARAM_IDENTIFICADOR"
 
 class CatalogoPaginaFragment : DialogFragment() {
-    lateinit var binding: FragmentCatalogoPaginaBinding
+    private lateinit var binding: FragmentCatalogoPaginaBinding
     private var codigo: Long? = null
+    private var identificador: String? = null
     private var descricao: String? = null
+    private var cardViewCatalogoAdapter: CardViewCatalogoPaginaAdapter? = null
+
+    @Inject
+    lateinit var catalogoPaginaRepository: CatalogoPaginaRepository
 
     companion object {
         private const val DIALOG_TAG = "CatalogoPaginaFragment"
 
         @JvmStatic
-        fun newInstance(codigo: Long, descricao: String) = CatalogoPaginaFragment().apply {
-            arguments = bundleOf(
-                PARAM_CODIGO to codigo,
-                PARAM_DESCRICAO to descricao
-            )
-        }
+        fun newInstance(codigo: Long, descricao: String?, identificador: String) =
+            CatalogoPaginaFragment().apply {
+                arguments = bundleOf(
+                    PARAM_CODIGO to codigo,
+                    PARAM_DESCRICAO to descricao,
+                    PARAM_IDENTIFICADOR to identificador
+                )
+            }
     }
-
-    private var codigoCatalogoSelecionado: Long? = null
-    private var cardViewCatalogoAdapter: CardViewCatalogoPaginaAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        ApplicationLocate.component.inject(this)
         arguments?.let {
-            descricao = it.getString(PARAM_DESCRICAO)
+            descricao = it.getString(PARAM_DESCRICAO, "")
             codigo = it.getLong(PARAM_CODIGO)
+            identificador = it.getString(PARAM_IDENTIFICADOR)
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCatalogoPaginaBinding.inflate(inflater, container, false)
+        binding = FragmentCatalogoPaginaBinding
+            .inflate(inflater, container, false)
         return binding.root
     }
 
     override fun getTheme(): Int {
         return R.style.DialogTheme
     }
-
 
     fun openDialog(fm: FragmentManager) {
         if (fm.findFragmentByTag(DIALOG_TAG) == null) {
@@ -79,6 +89,7 @@ class CatalogoPaginaFragment : DialogFragment() {
 
         cardViewCatalogoAdapter =
             CardViewCatalogoPaginaAdapter(
+                requireContext(), this.identificador!!,
                 object : CardViewCatalogoPaginaAdapter.OnItemTouchListener {
                     override fun onDetalhar(view: View, position: Int) {
                         /*val registro = cardViewCatalogoAdapter!!.obterRegistro(position)
@@ -100,7 +111,7 @@ class CatalogoPaginaFragment : DialogFragment() {
                             v!!,
                             R.menu.menu_catalogo_pagina,
                             registro.catalogoId!!,
-                            registro.id!!
+                            registro.id
                         )
                     }
                 })
@@ -112,7 +123,6 @@ class CatalogoPaginaFragment : DialogFragment() {
             false
         )
     }
-
 
     private fun showMenu(
         v: View,
@@ -127,12 +137,14 @@ class CatalogoPaginaFragment : DialogFragment() {
             popup.setForceShowIcon(true)
         }
 
-       /* popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             return@setOnMenuItemClickListener when (menuItem.itemId) {
+
                 R.id.menu_catalogo_pagina_pd_catalogo -> {
                     UtilCatalogo.listarProdutosDoCatalogo(catalogoId)
                     true
                 }
+
                 R.id.menu_catalogo_pagina_pd_pagina -> {
                     UtilCatalogo.listarProdutosDoCatalogo(catalogoId, catalogoIdPagina)
                     true
@@ -141,26 +153,17 @@ class CatalogoPaginaFragment : DialogFragment() {
                 else -> false
             }
         }
-        popup.show()*/
-
+        popup.show()
     }
 
-
     fun carregarCatalogo() {
-        codigoCatalogoSelecionado = this.codigo
         binding.txtDescricao.text = this.descricao
         carregarRegistros()
     }
 
     private fun carregarRegistros() {
-        if (codigoCatalogoSelecionado != null)
-            GetRegistros()
-    }
-
-    private fun GetRegistros() {
         TaskObserver.runInSingle(requireContext(), {
-            ApplicationLocate.instance.dataBase!!.catalogoPaginaDao()
-                .obterCatalogoPaginaMapeados(codigoCatalogoSelecionado!!)
+            catalogoPaginaRepository.obterCatalogoPaginaMapeados(this.codigo!!)
         }, {
             cardViewCatalogoAdapter!!.carregarRegistros(it)
         }, {

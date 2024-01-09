@@ -9,11 +9,4 @@
         android:title="@string/atualizar_registros"
         app:showAsAction="withText" />
 
-    <item
-        android:id="@+id/menu_central_atualizar_configuracao"
-        android:icon="@drawable/ic_baseline_settings_applications_24_white"
-        android:orderInCategory="2"
-        android:title="@string/label_configuracao"
-        app:showAsAction="withText" />
-
 </menu>

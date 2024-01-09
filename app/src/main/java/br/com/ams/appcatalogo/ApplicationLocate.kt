@@ -13,6 +13,7 @@ import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.entity.UploadPolicy
 
 class ApplicationLocate : Application() {
+    @Deprecated("Remover")
     var dataBase: AppDatabase? = null
 
     override fun onCreate() {

@@ -11,9 +11,6 @@ import br.com.ams.appcatalogo.model.CatalogoPaginaMapeadosDTO
 
 @Dao
 interface CatalogoPaginaDao  {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-      fun insertAll(vararg values: CatalogoPagina)
-
-    @Query("SELECT * FROM catalogopagina where id = :id")
-    fun obterCatalogoPaginaMapeados(id: Long): List<CatalogoPaginaDTO>?
+    @Query("SELECT * FROM catalogo_pagina where id = :id")
+    fun obterCatalogoPaginaMapeados(id: Long): List<CatalogoPagina>
 }

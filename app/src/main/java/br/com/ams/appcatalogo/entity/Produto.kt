@@ -5,10 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "Produto")
+@Entity(tableName = "produto")
 class Produto(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "referencia") val referencia: String?,
     @ColumnInfo(name = "descricao") val descricao: String?,
-    @ColumnInfo(name = "valor") val valor: Double?
+    @ColumnInfo(name = "valor") val valor: Double?,
+    @ColumnInfo(name = "ativo") val ativo: Boolean?
 )

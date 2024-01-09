@@ -9,4 +9,8 @@ object Constantes {
 
     const val KEY_TOKEN_BEARER = "TOKEN_BEARER"
     const val KEY_TOKEN_USER_ID = "TOKEN_USER_ID"
+
+    const val NT_CONSULTA_PRODUTO = "NT_CONSULTA_PRODUTO"
+
+    const val VIEW_CONSULTA_PRODUTO = "br.com.ams.appcatalogo.produto.ProdutoActivity"
 }

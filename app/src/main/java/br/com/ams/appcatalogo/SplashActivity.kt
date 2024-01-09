@@ -9,7 +9,6 @@ import android.os.StrictMode
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.DialogsUtils
-import br.com.ams.appcatalogo.view.ConfiguracaoActivity
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
@@ -63,6 +62,7 @@ class SplashActivity : AppCompatActivity() {
 
         PermissionUtils.permission(*permissions.toTypedArray())
             .callback { isAllGranted, _, deniedForever, denied ->
+
 
                 if (isAllGranted) {
                     iniciarMain()
@@ -143,8 +143,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun carregarViewPrincipal() {
-        finish()
-        ActivityUtils.startActivity(MainActivity::class.java)
+        ActivityUtils.startActivity(CatalogoActivity::class.java)
+        this.finish()
     }
 
     private fun logout() {

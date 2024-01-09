@@ -8,9 +8,6 @@ import br.com.ams.appcatalogo.entity.CatalogoPaginaMapeamento
 
 @Dao
 interface CatalogoPaginaProdutoDao   {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-      fun insertAll(vararg values: CatalogoPaginaMapeamento)
-
    /* @Query("SELECT * FROM catalogopaginamapeamentoproduto")
     fun obterIdProduto(
         codigoCatalogo: Long,

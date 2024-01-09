@@ -5,7 +5,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "CatalogoPaginaMapeamentoProduto",
+    tableName = "catalogo_pagina_mapeamento_produtos_produto",
     primaryKeys = ["catalogoPaginaMapeamentoId", "produtoId"],
 )
 class CatalogoPaginaMapeamentoProduto(

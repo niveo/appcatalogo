@@ -6,7 +6,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "CatalogoPagina")
+@Entity(tableName = "catalogo_pagina")
 class CatalogoPagina(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "catalogoId") val catalogoId: Long?,

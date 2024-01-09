@@ -41,14 +41,6 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical" />
 
-                <ImageButton
-                    android:id="@+id/cardviewcatalogo_menu"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:adjustViewBounds="true"
-                    android:background="?android:selectableItemBackground"
-                    android:gravity="end"
-                    app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
                 <ProgressBar
                     android:id="@+id/progressCatalogo"

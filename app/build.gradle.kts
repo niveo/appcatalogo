@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId ="br.com.ams.appcatalogo"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -49,9 +49,11 @@ android {
 
 dependencies {
 
-    val room_version by extra("2.5.0")
+    val room_version by extra("2.6.1")
     val okhttp3_version by extra("4.10.0")
     val dagger_version by extra("2.5")
+    val lifecycle_version by extra("2.6.2")
+    val coroutines by extra ("1.3.9")
 
     implementation ("androidx.core:core-ktx:1.12.0")
     implementation ("androidx.appcompat:appcompat:1.6.1")
@@ -65,6 +67,11 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation ("com.blankj:utilcodex:1.31.1")
 
+    // Lifecycle components
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    implementation ("androidx.lifecycle:lifecycle-common-java8:$lifecycle_version")
+
     // Retrofit & Gson
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation ("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
@@ -77,10 +84,10 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
 
+    // Room components
     implementation ("androidx.room:room-ktx:$room_version")
-    implementation ("androidx.room:room-runtime:$room_version")
     kapt ("androidx.room:room-compiler:$room_version")
-    implementation ("androidx.room:room-rxjava3:$room_version")
+    androidTestImplementation ("androidx.room:room-testing:$room_version")
 
     implementation ("com.google.dagger:dagger:2.50")
     kapt ("com.google.dagger:dagger-compiler:2.50")

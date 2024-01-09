@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "CatalogoPaginaMapeamento")
+@Entity(tableName = "catalogo_pagina_mapeamento")
 class CatalogoPaginaMapeamento(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "catalogoPaginaId") val catalogoPaginaId: Long?,

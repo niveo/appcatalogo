@@ -6,16 +6,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import br.com.ams.appcatalogo.entity.Produto
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProdutoDao  {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg values: Produto)
+    @Query("SELECT * FROM produto WHERE ativo = 1")
+    fun getAll(): List<Produto>
 
-    @Query("SELECT * FROM Produto")
-    fun getAll(): LiveData<Produto>
-
-    @Query("SELECT * FROM Produto WHERE id IN (:ids)")
-    fun obterProdutoCodigos(ids: List<Long>): LiveData<Produto>
+    @Query("SELECT * FROM produto WHERE id IN (:ids) and ativo = 1")
+    fun obterProdutoCodigos(ids: List<Long>): List<Produto>
 }

@@ -13,6 +13,10 @@ import br.com.ams.appcatalogo.entity.CatalogoPaginaMapeamento
 import br.com.ams.appcatalogo.entity.CatalogoPaginaMapeamentoProduto
 import br.com.ams.appcatalogo.entity.Produto
 
+
+
+const val VERSION_DB = 2
+
 @Database(
     entities = [
         Produto::class,
@@ -21,7 +25,7 @@ import br.com.ams.appcatalogo.entity.Produto
         CatalogoPaginaMapeamento::class,
         CatalogoPaginaMapeamentoProduto::class
     ],
-    version = 1
+    version = VERSION_DB
 )
 @TypeConverters(value = [Converters::class])
 abstract class AppDatabase : RoomDatabase() {

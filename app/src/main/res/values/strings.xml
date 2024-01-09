@@ -30,4 +30,6 @@
 
     <string name="imagekit_publickey">public_T+f1go8ZY0QaMaAj4kIWJLLsIfU=</string>
     <string name="imagekit_endpoint">https://ik.imagekit.io/aspofp9v1</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

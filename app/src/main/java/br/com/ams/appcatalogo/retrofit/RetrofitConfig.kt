@@ -75,13 +75,6 @@ class RetrofitConfig private constructor() {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
 
-        /*SPUtils.getInstance().put(
-            Constantes.KEY_TOKEN_BEARER,
-            "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImU2QUNkY2tYWWlQM0ptblloWktxaSJ9.eyJpc3MiOiJodHRwczovL2Rldi1lNjhzaTM0czVsZWNtdXBsLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJBVDZLS1BMRDdTbEh5UXg3N3dONjBES1BRUVMwelJwQ0BjbGllbnRzIiwiYXVkIjoiOWZiNDNkN2QtZDY3OS00NTFjLTg3ZWEtMTFkMDc0YjczZmM5IiwiaWF0IjoxNzAzMjcyNjM4LCJleHAiOjE3MDMzNTkwMzgsImF6cCI6IkFUNktLUExEN1NsSHlReDc3d042MERLUFFRUzB6UnBDIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.G_7eNffO1XrGH_B8OqKdPU-Vye62y-aKBvTCuJ3KH0Nx0XCU_toPdxNzPkWSj5R7tnbxkaY4KZxQZzJHhk0N0oF-5c_E95evfxIw8hYYrHM-JkPyY_8vXsUte-BbAAHi88MpKXR51UBPavlUfhKqECVlJ_0iqhyrlCxCA-UigaisQqxlnYNx3Lf2ttcjQqPRnf2csyM0fjc3kl7Q-avsG0LWpWaT6amj8jFhro5cToe0N6MRHWQ8GtbWOPXXkCC6CqO33qtB-w7G-z16ETmjHQ8t56qA4NG1yX2ZumayxxOZhiVStkppWfG1JRxowjqKZ9CwTHWw-QeelpxjfyqnLA"
-        )*/
-
-        LogUtils.w(SPUtils.getInstance().getString(Constantes.KEY_TOKEN_BEARER))
-
         return OkHttpClient().newBuilder()
             .readTimeout(TIMEOUT_MILLIS.toLong(), TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_MILLIS.toLong(), TimeUnit.SECONDS)
