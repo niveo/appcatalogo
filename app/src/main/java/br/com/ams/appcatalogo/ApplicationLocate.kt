@@ -2,6 +2,7 @@ package br.com.ams.appcatalogo
 
 import android.app.Application
 import androidx.room.Room
+import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.database.AppDatabase
 import br.com.ams.appcatalogo.di.AppComponent
 import br.com.ams.appcatalogo.di.AppModule
@@ -11,10 +12,14 @@ import com.blankj.utilcode.util.LogUtils
 import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.entity.UploadPolicy
+import io.github.cdimascio.dotenv.dotenv
 
 class ApplicationLocate : Application() {
-    @Deprecated("Remover")
-    var dataBase: AppDatabase? = null
+
+    val dotenv = dotenv {
+        directory = "./assets"
+        filename = "env"
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -28,8 +33,8 @@ class ApplicationLocate : Application() {
 
         ImageKit.init(
             context = applicationContext,
-            publicKey = getString(R.string.imagekit_publickey),
-            urlEndpoint = getString(R.string.imagekit_endpoint),
+            publicKey = dotenv[Constantes.IMAGEKIT_PUBLICKEY],
+            urlEndpoint = dotenv[Constantes.IMAGEKIT_ENDPOINT],
             transformationPosition = TransformationPosition.PATH,
             defaultUploadPolicy = UploadPolicy.Builder()
                 .requireNetworkType(UploadPolicy.NetworkType.ANY)

@@ -101,5 +101,7 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:okhttp3_version")
     implementation ("com.squareup.okhttp3:logging-interceptor:${okhttp3_version}")
 
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+
 
 }

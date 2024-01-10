@@ -1,7 +1,6 @@
 package br.com.ams.appcatalogo
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,10 +18,12 @@ import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.SPUtils
+import io.github.cdimascio.dotenv.dotenv
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private lateinit var account: Auth0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -37,8 +38,8 @@ class SplashActivity : AppCompatActivity() {
         StrictMode.setVmPolicy(builder.build())
 
         account = Auth0(
-            getString(R.string.com_auth0_client_id),
-            getString(R.string.com_auth0_domain),
+            ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_CLIENT_ID],
+            ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_DOMAIN],
         )
 
         if (Build.VERSION.SDK_INT >= 23) {
@@ -117,8 +118,7 @@ class SplashActivity : AppCompatActivity() {
         WebAuthProvider.login(account)
             .withScheme(getString(R.string.com_auth0_scheme))
             .withScope("openid profile email read:current_user update:current_user_metadata")
-            .withAudience(getString(R.string.com_auth0_audience))
-            //.withAudience("https://${getString(R.string.com_auth0_domain)}/api/v2/")
+            .withAudience(ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_AUDIENCE])
             // Launch the authentication passing the callback where the results will be received
             .start(this, object : Callback<Credentials, AuthenticationException> {
                 // Called when there is an authentication failure
@@ -131,9 +131,6 @@ class SplashActivity : AppCompatActivity() {
                 override fun onSuccess(credentials: Credentials) {
                     // Get the access token from the credentials object.
                     // This can be used to call APIs
-                    LogUtils.w(credentials.accessToken)
-                    LogUtils.w(credentials.idToken)
-                    LogUtils.w(credentials.user.getId())
                     SPUtils.getInstance().put(Constantes.KEY_TOKEN_BEARER, credentials.accessToken)
                     SPUtils.getInstance()
                         .put(Constantes.KEY_TOKEN_USER_ID, credentials.user.getId())

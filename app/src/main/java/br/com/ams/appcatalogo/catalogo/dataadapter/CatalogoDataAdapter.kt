@@ -1,19 +1,19 @@
 package br.com.ams.appcatalogo.catalogo.dataadapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.ams.appcatalogo.R
+import br.com.ams.appcatalogo.ApplicationLocate
+import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.databinding.CatalogoDataAdapterBinding
 import br.com.ams.appcatalogo.entity.Catalogo
 import com.example.imagekit.android.picasso_extension.createWithPicasso
 import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.TransformationPosition
+import io.github.cdimascio.dotenv.dotenv
 
 class CatalogoDataAdapter(
-    private val context: Context,
     private val onItemTouchListener: OnItemTouchListener
 ) :
     RecyclerView.Adapter<CatalogoDataAdapter.ViewHolder>() {
@@ -67,7 +67,7 @@ class CatalogoDataAdapter(
                             .url(
                                 path = avatar,
                                 transformationPosition = TransformationPosition.QUERY,
-                                urlEndpoint = "${context.getString(R.string.imagekit_endpoint)}/catalogo/catalogos/${identificador}/"
+                                urlEndpoint = "${ApplicationLocate.instance.dotenv[Constantes.IMAGEKIT_ENDPOINT]}/catalogo/catalogos/${identificador}/"
                             )
                             .createWithPicasso()
                             .into(binding.cardviewcatalogoImg)

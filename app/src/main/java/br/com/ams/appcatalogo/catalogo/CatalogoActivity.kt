@@ -43,7 +43,6 @@ class CatalogoActivity : AppCompatActivity() {
         ApplicationLocate.component.inject(this)
 
         cardViewCatalogoAdapter = CatalogoDataAdapter(
-            this,
             object : CatalogoDataAdapter.OnItemTouchListener {
                 override fun onDetalhar(view: View, position: Int) {
 

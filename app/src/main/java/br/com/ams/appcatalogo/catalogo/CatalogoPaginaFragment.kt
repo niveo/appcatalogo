@@ -89,7 +89,7 @@ class CatalogoPaginaFragment : DialogFragment() {
 
         cardViewCatalogoAdapter =
             CatalogoPaginaDataAdapter(
-                requireContext(), this.identificador!!,
+                this.identificador!!,
                 object : CatalogoPaginaDataAdapter.OnItemTouchListener {
                     override fun onDetalhar(view: View, position: Int) {
                         /*val registro = cardViewCatalogoAdapter!!.obterRegistro(position)
