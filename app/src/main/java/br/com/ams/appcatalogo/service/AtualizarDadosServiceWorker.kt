@@ -165,7 +165,6 @@ class AtualizarDadosServiceWorker(
                                     .forEach { campo ->
 
 
-
                                         when (getType(getColumnIndexOrThrow(campo.campo))) {
                                             Cursor.FIELD_TYPE_STRING -> {
                                                 contentValue.put(
@@ -200,11 +199,6 @@ class AtualizarDadosServiceWorker(
     }
 
     private fun atualizarRegistros() {
-        this.providesRoomDatabase.runInTransaction(Runnable {
-            run {
-
-            }
-        })
         with(
             SQLiteDatabase.openDatabase(
                 this.providesRoomDatabase.openHelper.writableDatabase.path.toString(),

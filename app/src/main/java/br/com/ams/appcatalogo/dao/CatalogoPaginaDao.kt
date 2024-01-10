@@ -11,6 +11,6 @@ import br.com.ams.appcatalogo.model.CatalogoPaginaMapeadosDTO
 
 @Dao
 interface CatalogoPaginaDao  {
-    @Query("SELECT * FROM catalogo_pagina where id = :id")
+    @Query("SELECT * FROM catalogo_pagina where catalogoId = :id ORDER BY pagina")
     fun obterCatalogoPaginaMapeados(id: Long): List<CatalogoPagina>
 }
