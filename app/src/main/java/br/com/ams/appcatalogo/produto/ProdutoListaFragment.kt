@@ -1,7 +1,6 @@
 package br.com.ams.appcatalogo.produto
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
-import br.com.ams.appcatalogo.catalogo.CatalogoPaginaFragment
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.Funcoes
 import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.FragmentProdutoListaBinding
+import br.com.ams.appcatalogo.produto.dataadapter.ProdutoListaDataAdapter
 import br.com.ams.appcatalogo.repository.ProdutoRepository
-import com.blankj.utilcode.util.LogUtils
 import javax.inject.Inject
 
 class ProdutoListaFragment : DialogFragment() {

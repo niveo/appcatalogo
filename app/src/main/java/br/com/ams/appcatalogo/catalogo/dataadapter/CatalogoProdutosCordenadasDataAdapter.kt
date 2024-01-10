@@ -1,15 +1,16 @@
-package br.com.ams.appcatalogo.catalogo
+package br.com.ams.appcatalogo.catalogo.dataadapter
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.ams.appcatalogo.common.ValorRealUtil
-import br.com.ams.appcatalogo.databinding.CardviewprodutoscordenadasBinding
+import br.com.ams.appcatalogo.databinding.CatalogoProdutosCordenadasDataAdapterBinding
 import br.com.ams.appcatalogo.entity.Produto
 
-class CardViewProdutosCordenadas(
+class CatalogoProdutosCordenadasDataAdapter(
     private val onItemTouchListener: OnItemTouchListener
-) : RecyclerView.Adapter<CardViewProdutosCordenadas.ViewHolder>() {
+) : RecyclerView.Adapter<CatalogoProdutosCordenadasDataAdapter.ViewHolder>() {
 
     private var registros: List<Produto>? = null
 
@@ -22,14 +23,14 @@ class CardViewProdutosCordenadas(
         return registros!![position]
     }
 
-    inner class ViewHolder(val binding: CardviewprodutoscordenadasBinding) :
+    inner class ViewHolder(val binding: CatalogoProdutosCordenadasDataAdapterBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         i: Int
-    ): CardViewProdutosCordenadas.ViewHolder {
-        val binding = CardviewprodutoscordenadasBinding.inflate(
+    ): ViewHolder {
+        val binding = CatalogoProdutosCordenadasDataAdapterBinding.inflate(
             LayoutInflater.from(viewGroup.context),
             viewGroup,
             false

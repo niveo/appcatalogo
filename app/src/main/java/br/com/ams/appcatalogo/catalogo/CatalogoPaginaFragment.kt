@@ -1,6 +1,5 @@
 package br.com.ams.appcatalogo.catalogo
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
+import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoPaginaDataAdapter
 import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
 import br.com.ams.appcatalogo.common.Funcoes
 import br.com.ams.appcatalogo.common.TaskObserver
@@ -30,7 +30,7 @@ class CatalogoPaginaFragment : DialogFragment() {
     private var codigo: Long? = null
     private var identificador: String? = null
     private var descricao: String? = null
-    private var cardViewCatalogoAdapter: CardViewCatalogoPaginaAdapter? = null
+    private var cardViewCatalogoAdapter: CatalogoPaginaDataAdapter? = null
 
     @Inject
     lateinit var catalogoPaginaRepository: CatalogoPaginaRepository
@@ -88,9 +88,9 @@ class CatalogoPaginaFragment : DialogFragment() {
         this.carregarCatalogo()
 
         cardViewCatalogoAdapter =
-            CardViewCatalogoPaginaAdapter(
+            CatalogoPaginaDataAdapter(
                 requireContext(), this.identificador!!,
-                object : CardViewCatalogoPaginaAdapter.OnItemTouchListener {
+                object : CatalogoPaginaDataAdapter.OnItemTouchListener {
                     override fun onDetalhar(view: View, position: Int) {
                         /*val registro = cardViewCatalogoAdapter!!.obterRegistro(position)
                         val fileCatalogo = UtilCatalogo.arquivoCatalogo(registro)

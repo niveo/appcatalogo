@@ -1,4 +1,4 @@
-package br.com.ams.appcatalogo.produto
+package br.com.ams.appcatalogo.produto.dataadapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

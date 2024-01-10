@@ -6,24 +6,24 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentManager
-import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
+import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoProdutosCordenadasDataAdapter
 import br.com.ams.appcatalogo.common.Funcoes
-import br.com.ams.appcatalogo.common.TaskObserver
-import br.com.ams.appcatalogo.databinding.ProdutosCordenadasFragmentdialogBinding
+import br.com.ams.appcatalogo.databinding.CatalogoProdutosCordenadasFragmentBinding
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ProdutosCordenadasFragmentDialog : BottomSheetDialogFragment() {
+class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
 
-    private var cardViewProdutosCordenadas: CardViewProdutosCordenadas? = null
-    private lateinit var binding: ProdutosCordenadasFragmentdialogBinding
+    private var cardViewProdutosCordenadas: CatalogoProdutosCordenadasDataAdapter? = null
+    private lateinit var binding: CatalogoProdutosCordenadasFragmentBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ProdutosCordenadasFragmentdialogBinding.inflate(inflater, container, false)
+        binding = CatalogoProdutosCordenadasFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,8 +32,8 @@ class ProdutosCordenadasFragmentDialog : BottomSheetDialogFragment() {
 
         val longArray = arguments?.getLongArray(EXTRA_PRODUTOS)
 
-        cardViewProdutosCordenadas = CardViewProdutosCordenadas(
-            object : CardViewProdutosCordenadas.OnItemTouchListener {
+        cardViewProdutosCordenadas = CatalogoProdutosCordenadasDataAdapter(
+            object : CatalogoProdutosCordenadasDataAdapter.OnItemTouchListener {
                 override fun onDetalhar(view: View, position: Int) {
                     ToastUtils.showLong(getString(R.string.nao_implementado))
                     dismiss()
@@ -90,8 +90,8 @@ class ProdutosCordenadasFragmentDialog : BottomSheetDialogFragment() {
         private const val DIALOG_TAG = "produtosCorndenadasDialog"
 
         @JvmStatic
-        fun newInstance(produtos: LongArray): ProdutosCordenadasFragmentDialog {
-            val fragment = ProdutosCordenadasFragmentDialog().apply {
+        fun newInstance(produtos: LongArray): CatalogoProdutosCordenadasFragment {
+            val fragment = CatalogoProdutosCordenadasFragment().apply {
                 arguments = Bundle().apply {
                     putLongArray(EXTRA_PRODUTOS, produtos)
                 }

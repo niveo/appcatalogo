@@ -1,4 +1,4 @@
-package br.com.ams.appcatalogo.catalogo
+package br.com.ams.appcatalogo.catalogo.dataadapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.ams.appcatalogo.R
-import br.com.ams.appcatalogo.databinding.CardviewcatalogopaginaBinding
+import br.com.ams.appcatalogo.databinding.CatalogoPaginaDataAdapterBinding
 import br.com.ams.appcatalogo.entity.CatalogoPagina
-import br.com.ams.appcatalogo.model.CatalogoPaginaDTO
 import com.example.imagekit.android.picasso_extension.createWithPicasso
 import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.TransformationPosition
 
-class CardViewCatalogoPaginaAdapter(
+class CatalogoPaginaDataAdapter(
     private val context: Context,
     private val identificador: String,
     private val onItemTouchListener: OnItemTouchListener
 ) :
-    RecyclerView.Adapter<CardViewCatalogoPaginaAdapter.ViewHolder>() {
+    RecyclerView.Adapter<CatalogoPaginaDataAdapter.ViewHolder>() {
     private var registros: List<CatalogoPagina>? = null
 
     fun carregarRegistros(registros: List<CatalogoPagina>?) {
@@ -30,7 +29,7 @@ class CardViewCatalogoPaginaAdapter(
         viewGroup: ViewGroup,
         i: Int
     ): ViewHolder {
-        val binding = CardviewcatalogopaginaBinding.inflate(
+        val binding = CatalogoPaginaDataAdapterBinding.inflate(
             LayoutInflater.from(viewGroup.context),
             viewGroup,
             false
@@ -38,7 +37,7 @@ class CardViewCatalogoPaginaAdapter(
         return ViewHolder(binding)
     }
 
-    inner class ViewHolder(val binding: CardviewcatalogopaginaBinding) :
+    inner class ViewHolder(val binding: CatalogoPaginaDataAdapterBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun getItemCount(): Int {

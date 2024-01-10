@@ -1,23 +1,21 @@
 package br.com.ams.appcatalogo.catalogo
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.work.WorkManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
+import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoDataAdapter
 import br.com.ams.appcatalogo.common.*
 import br.com.ams.appcatalogo.databinding.ActivityCatalogoBinding
 import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
 import br.com.ams.appcatalogo.produto.ProdutoListaFragment
 import br.com.ams.appcatalogo.repository.CatalogoRepository
 import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorker
-import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -26,7 +24,7 @@ import javax.inject.Inject
 
 class CatalogoActivity : AppCompatActivity() {
     private var dialog: ProgressDialogUtil? = null
-    private lateinit var cardViewCatalogoAdapter: CardViewCatalogoAdapter
+    private lateinit var cardViewCatalogoAdapter: CatalogoDataAdapter
     private lateinit var binding: ActivityCatalogoBinding
 
     @Inject
@@ -44,9 +42,9 @@ class CatalogoActivity : AppCompatActivity() {
 
         ApplicationLocate.component.inject(this)
 
-        cardViewCatalogoAdapter = CardViewCatalogoAdapter(
+        cardViewCatalogoAdapter = CatalogoDataAdapter(
             this,
-            object : CardViewCatalogoAdapter.OnItemTouchListener {
+            object : CatalogoDataAdapter.OnItemTouchListener {
                 override fun onDetalhar(view: View, position: Int) {
 
                     val catalogoSelecionado = cardViewCatalogoAdapter.getItem(position)
