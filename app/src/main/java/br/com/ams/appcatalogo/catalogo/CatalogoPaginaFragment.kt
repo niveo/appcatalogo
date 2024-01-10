@@ -1,5 +1,6 @@
 package br.com.ams.appcatalogo.catalogo
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoPaginaDataAdapter
 import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
+import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.Funcoes
 import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.FragmentCatalogoPaginaBinding
@@ -85,30 +87,28 @@ class CatalogoPaginaFragment : DialogFragment() {
             dismiss()
         }
 
-        this.carregarCatalogo()
-
         cardViewCatalogoAdapter =
             CatalogoPaginaDataAdapter(
                 this.identificador!!,
                 object : CatalogoPaginaDataAdapter.OnItemTouchListener {
                     override fun onDetalhar(view: View, position: Int) {
-                        /*val registro = cardViewCatalogoAdapter!!.obterRegistro(position)
-                        val fileCatalogo = UtilCatalogo.arquivoCatalogo(registro)
+                        val registro = cardViewCatalogoAdapter!!.obterRegistro(position)
                         val intent = Intent(
                             this@CatalogoPaginaFragment.context,
                             VisualizaImagemActivity::class.java
                         )
-                        intent.putExtra("KEY_LOCAL_FILE_CATALOGO", fileCatalogo.toString())
-                        intent.putExtra("KEY_CODIGO_CATALOGO", registro.catalogoId)
-                        intent.putExtra("KEY_CODIGO_CATALOGO_PAGINA", registro.id)
-                        startActivity(intent)*/
+                        intent.putExtra(Constantes.KEY_CATALOGO_IDENTIFICADOR, identificador)
+                        intent.putExtra(Constantes.KEY_CATALOGO_CODIGO, registro.catalogoId)
+                        intent.putExtra(Constantes.KEY_CATALOGO_PAGINA_CODIGO, registro.id)
+                        intent.putExtra(Constantes.KEY_CATALOGO_NOME, registro.name)
+                        startActivity(intent)
                     }
 
-                    override fun onMenu(v: View?, absoluteAdapterPosition: Int) {
+                    override fun onMenu(v: View, position: Int) {
                         val registro =
-                            cardViewCatalogoAdapter!!.obterRegistro(absoluteAdapterPosition)
+                            cardViewCatalogoAdapter!!.obterRegistro(position)
                         showMenu(
-                            v!!,
+                            v,
                             R.menu.menu_catalogo_pagina,
                             registro.catalogoId!!,
                             registro.id
@@ -122,6 +122,8 @@ class CatalogoPaginaFragment : DialogFragment() {
             cardViewCatalogoAdapter!!,
             false
         )
+
+        this.carregarCatalogo()
     }
 
     private fun showMenu(

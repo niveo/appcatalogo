@@ -16,7 +16,14 @@ import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
 import br.com.ams.appcatalogo.produto.ProdutoListaFragment
 import br.com.ams.appcatalogo.repository.CatalogoRepository
 import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorker
+import com.auth0.android.Auth0
+import com.auth0.android.authentication.AuthenticationException
+import com.auth0.android.callback.Callback
+import com.auth0.android.provider.WebAuthProvider
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.ToastUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -30,6 +37,10 @@ class CatalogoActivity : AppCompatActivity() {
     @Inject
     lateinit var catalogoRepository: CatalogoRepository
 
+    var account: Auth0 = Auth0(
+        ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_CLIENT_ID],
+        ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_DOMAIN],
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,6 +122,11 @@ class CatalogoActivity : AppCompatActivity() {
                 true
             }
 
+            R.id.menu_central_logout -> {
+                logout()
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -122,6 +138,26 @@ class CatalogoActivity : AppCompatActivity() {
             .observe(this, Observer {
                 if (it.state.isFinished) {
                     carregarRegistros()
+                    ToastUtils.showLong(R.string.registros_atualizados)
+                }
+            })
+    }
+
+    private fun logout() {
+        WebAuthProvider.logout(account)
+            .withScheme("demo")
+            .start(this, object : Callback<Void?, AuthenticationException> {
+                override fun onSuccess(payload: Void?) {
+                    val sp = SPUtils.getInstance()
+                    sp.remove(Constantes.KEY_TOKEN_BEARER, true)
+                    sp.remove(Constantes.KEY_TOKEN_USER_ID, true)
+
+                    AppUtils.exitApp()
+                }
+
+                override fun onFailure(error: AuthenticationException) {
+                    LogUtils.e(error)
+                    ToastUtils.showLong(R.string.erro_processo)
                 }
             })
     }

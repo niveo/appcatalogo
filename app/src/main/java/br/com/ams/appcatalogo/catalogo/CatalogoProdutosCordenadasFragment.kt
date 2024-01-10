@@ -1,4 +1,5 @@
 package br.com.ams.appcatalogo.catalogo
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -6,17 +7,30 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentManager
+import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoProdutosCordenadasDataAdapter
 import br.com.ams.appcatalogo.common.Funcoes
+import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.CatalogoProdutosCordenadasFragmentBinding
+import br.com.ams.appcatalogo.repository.ProdutoRepository
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import javax.inject.Inject
 
 class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
 
-    private var cardViewProdutosCordenadas: CatalogoProdutosCordenadasDataAdapter? = null
+    private lateinit var cardViewProdutosCordenadas: CatalogoProdutosCordenadasDataAdapter
     private lateinit var binding: CatalogoProdutosCordenadasFragmentBinding
+
+    @Inject
+    lateinit var produtoRepository: ProdutoRepository
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ApplicationLocate.component.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,12 +61,10 @@ class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
         Funcoes.configurarRecyclerDefault(
             view.context,
             binding.produtosCordenadasFragmentdialogRecycler,
-            cardViewProdutosCordenadas!!,
+            cardViewProdutosCordenadas,
             true
         )
-
         carregarTransacao(longArray!!)
-
     }
 
     override fun onResume() {
@@ -64,19 +76,19 @@ class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
     }
 
     fun carregarTransacao(produtos: LongArray) {
-        /*TaskObserver.runInSingle(requireContext(), {
-            ApplicationLocate.instance.dataBase!!.produtoDao()
-                .obterProdutoCodigos(produtos.asList())
+        LogUtils.w(produtos)
+        TaskObserver.runInSingle(requireContext(), {
+            produtoRepository.obterProdutoCodigos(produtos.asList())
         }, {
-            if (it.) {
+            if (it.isNullOrEmpty()) {
                 ToastUtils.showLong(getString(R.string.registros_nao_localizados))
                 dismiss()
             } else {
-                cardViewProdutosCordenadas!!.carregarRegistros(it)
+                cardViewProdutosCordenadas.carregarRegistros(it)
             }
         }, {
             Funcoes.alertaThrowable(it)
-        }, true)*/
+        }, true)
     }
 
     fun openDialog(fm: FragmentManager) {

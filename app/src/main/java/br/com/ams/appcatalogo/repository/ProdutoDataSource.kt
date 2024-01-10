@@ -1,5 +1,6 @@
 package br.com.ams.appcatalogo.repository
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import br.com.ams.appcatalogo.dao.ProdutoDao
 import br.com.ams.appcatalogo.entity.Produto
@@ -25,5 +26,14 @@ class ProdutoDataSource @Inject constructor(private val produtoDao: ProdutoDao) 
 
     override fun getAll(): List<Produto> {
         return this.produtoDao.getAll()
+    }
+
+    override fun obterProdutosCordenada(
+        codigoCatalogo: Long,
+        codigoCatalogoPagina: Long,
+        x: Float,
+        y: Float
+    ): Cursor {
+        return this.produtoDao.obterProdutosCordenada(codigoCatalogo, codigoCatalogoPagina, x, y)
     }
 }

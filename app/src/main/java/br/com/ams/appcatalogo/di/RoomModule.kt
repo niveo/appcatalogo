@@ -57,7 +57,6 @@ class RoomModule(mApplication: Application) {
         return ProdutoDataSource(produtoDao)
     }
 
-
     @Singleton
     @Provides
     fun providesCatalogoDao(appDatabase: AppDatabase): CatalogoDao {

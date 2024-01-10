@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import br.com.ams.appcatalogo.dao.CatalogoDao
 import br.com.ams.appcatalogo.dao.CatalogoPaginaDao
-import br.com.ams.appcatalogo.dao.CatalogoPaginaProdutoDao
 import br.com.ams.appcatalogo.dao.ProdutoDao
 import br.com.ams.appcatalogo.entity.Catalogo
 import br.com.ams.appcatalogo.entity.CatalogoPagina
@@ -32,5 +31,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun produtoDao(): ProdutoDao
     abstract fun catalogoDao(): CatalogoDao
     abstract fun catalogoPaginaDao(): CatalogoPaginaDao
-    abstract fun catalogoPaginaProdutoDao(): CatalogoPaginaProdutoDao
 }

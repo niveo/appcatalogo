@@ -1,9 +1,7 @@
 package br.com.ams.appcatalogo
 
 import android.app.Application
-import androidx.room.Room
 import br.com.ams.appcatalogo.common.Constantes
-import br.com.ams.appcatalogo.database.AppDatabase
 import br.com.ams.appcatalogo.di.AppComponent
 import br.com.ams.appcatalogo.di.AppModule
 import br.com.ams.appcatalogo.di.DaggerAppComponent

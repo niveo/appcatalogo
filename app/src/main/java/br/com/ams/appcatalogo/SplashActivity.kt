@@ -19,10 +19,15 @@ import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.SPUtils
 import io.github.cdimascio.dotenv.dotenv
+import javax.inject.Inject
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
-    private lateinit var account: Auth0
+
+    var account: Auth0 = Auth0(
+        ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_CLIENT_ID],
+        ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_DOMAIN],
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +41,6 @@ class SplashActivity : AppCompatActivity() {
         //LIBERA IMAGENS
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
-
-        account = Auth0(
-            ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_CLIENT_ID],
-            ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_DOMAIN],
-        )
 
         if (Build.VERSION.SDK_INT >= 23) {
             this.verificarPermissoes()
@@ -63,8 +63,6 @@ class SplashActivity : AppCompatActivity() {
 
         PermissionUtils.permission(*permissions.toTypedArray())
             .callback { isAllGranted, _, deniedForever, denied ->
-
-
                 if (isAllGranted) {
                     iniciarMain()
                 } else {
@@ -106,7 +104,10 @@ class SplashActivity : AppCompatActivity() {
 
     fun iniciarMain() {
         // loginWithBrowser()
-        if (!SPUtils.getInstance().getString(Constantes.KEY_TOKEN_BEARER, "").isNullOrBlank()) {
+        val sp = SPUtils.getInstance()
+        if (sp.contains(Constantes.KEY_TOKEN_BEARER) && !sp.getString(Constantes.KEY_TOKEN_BEARER)
+                .isNullOrBlank()
+        ) {
             carregarViewPrincipal()
         } else {
             loginWithBrowser()
@@ -143,19 +144,4 @@ class SplashActivity : AppCompatActivity() {
         ActivityUtils.startActivity(CatalogoActivity::class.java)
         this.finish()
     }
-
-    private fun logout() {
-        WebAuthProvider.logout(account)
-            .withScheme("demo")
-            .start(this, object : Callback<Void?, AuthenticationException> {
-                override fun onSuccess(payload: Void?) {
-                    // The user has been logged out!
-                }
-
-                override fun onFailure(error: AuthenticationException) {
-                    // Something went wrong!
-                }
-            })
-    }
-
 }

@@ -50,7 +50,7 @@ class CatalogoPaginaDataAdapter(
 
     interface OnItemTouchListener {
         fun onDetalhar(view: View, position: Int)
-        fun onMenu(v: View?, absoluteAdapterPosition: Int)
+        fun onMenu(v: View, position: Int)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

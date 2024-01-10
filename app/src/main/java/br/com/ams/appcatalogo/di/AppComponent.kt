@@ -3,6 +3,8 @@ package br.com.ams.appcatalogo.di
 import br.com.ams.appcatalogo.MainActivity
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.catalogo.CatalogoPaginaFragment
+import br.com.ams.appcatalogo.catalogo.CatalogoProdutosCordenadasFragment
+import br.com.ams.appcatalogo.catalogo.VisualizaImagemActivity
 import br.com.ams.appcatalogo.produto.ProdutoListaFragment
 import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorker
 import dagger.Component
@@ -10,7 +12,12 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [AppModule::class, RoomModule::class])
+@Component(
+    modules = [
+        AppModule::class,
+        RoomModule::class
+    ]
+)
 interface AppComponent {
     fun inject(view: MainActivity?)
 
@@ -22,9 +29,7 @@ interface AppComponent {
 
     fun inject(produtoListaFragment: ProdutoListaFragment)
 
-    /*fun productDao(): ProdutoDao
+    fun inject(visualizaImagemActivity: VisualizaImagemActivity)
 
-    fun appDatabase(): AppDatabase
-
-    fun application(): Application*/
+    fun inject(catalogoProdutosCordenadasFragment: CatalogoProdutosCordenadasFragment)
 }

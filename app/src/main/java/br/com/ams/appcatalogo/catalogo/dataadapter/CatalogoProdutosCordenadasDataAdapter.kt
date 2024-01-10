@@ -19,9 +19,6 @@ class CatalogoProdutosCordenadasDataAdapter(
         this.notifyDataSetChanged()
     }
 
-    fun obterRegistro(position: Int): Produto {
-        return registros!![position]
-    }
 
     inner class ViewHolder(val binding: CatalogoProdutosCordenadasDataAdapterBinding) :
         RecyclerView.ViewHolder(binding.root)
