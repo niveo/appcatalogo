@@ -8,19 +8,19 @@ import androidx.room.Query
 import br.com.ams.appcatalogo.entity.Produto
 import kotlinx.coroutines.flow.Flow
 
-private const val QUERY_PRODUTOS_DO_CATALOGO = "(select cpmpp.produtoId from catalogo, " +
+private const val QUERY_PRODUTOS_DO_CATALOGO = "select cpmpp.produtoId from catalogo, " +
         "catalogo_pagina as cp, " +
         "catalogo_pagina_mapeamento as cpm,  " +
         "catalogo_pagina_mapeamento_produtos_produto as cpmpp " +
         "where catalogo.id = :idCatalogo AND cp.catalogoId = catalogo.id AND cpm.catalogoPaginaId = cp.id " +
-        "AND cpmpp.catalogoPaginaMapeamentoId = cpm.id)"
+        "AND cpmpp.catalogoPaginaMapeamentoId = cpm.id"
 
-private const val QUERY_PRODUTOS_DO_CATALOGO_PAGINA = "(select cpmpp.produtoId from catalogo, " +
+private const val QUERY_PRODUTOS_DO_CATALOGO_PAGINA = "select cpmpp.produtoId from catalogo, " +
         "catalogo_pagina as cp, " +
         "catalogo_pagina_mapeamento as cpm,  " +
         "catalogo_pagina_mapeamento_produtos_produto as cpmpp " +
-        "where catalogo.id = :idCatalogo AND cp.id = :idCatalogoPagina XXXX AND cp.catalogoId = catalogo.id AND cpm.catalogoPaginaId = cp.id " +
-        "AND cpmpp.catalogoPaginaMapeamentoId = cpm.id)"
+        "where catalogo.id = :idCatalogo AND cp.id = :idCatalogoPagina AND cp.catalogoId = catalogo.id AND cpm.catalogoPaginaId = cp.id " +
+        "AND cpmpp.catalogoPaginaMapeamentoId = cpm.id"
 
 @Dao
 interface ProdutoDao {

@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.CatalogoPaginaFragment
+import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.Funcoes
 import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.FragmentProdutoListaBinding
@@ -18,15 +20,14 @@ import javax.inject.Inject
 
 class ProdutoListaFragment : DialogFragment() {
     private lateinit var binding: FragmentProdutoListaBinding
+    private lateinit var adapter: ProdutoListaDataAdapter
 
     @Inject
-    private lateinit var produtoRepository: ProdutoRepository
+    lateinit var produtoRepository: ProdutoRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            carregarRegistros()
-        }
+        ApplicationLocate.component.inject(this)
     }
 
     override fun onCreateView(
@@ -36,6 +37,23 @@ class ProdutoListaFragment : DialogFragment() {
         binding = FragmentProdutoListaBinding
             .inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = ProdutoListaDataAdapter()
+
+        Funcoes.configurarRecyclerDefault(
+            requireContext(),
+            binding.fragmentProdutoListaRecycler,
+            adapter,
+            false
+        )
+
+        arguments?.let {
+            carregarRegistros(it)
+        }
     }
 
     override fun getTheme(): Int {
@@ -58,11 +76,26 @@ class ProdutoListaFragment : DialogFragment() {
             }
     }
 
-    private fun carregarRegistros() {
+    private fun carregarRegistros(bundle: Bundle?) {
+        binding.fragmentProdutoListaRegistros.text = "";
         TaskObserver.runInSingle(requireContext(), {
-            //produtoRepository.obterProdutoCatalogo()
-        }, {
+            if (bundle == null) {
+                produtoRepository.getAll()
+            } else if (bundle.containsKey(Constantes.CATALOGO_ID) && bundle.containsKey(Constantes.CATALOGO_PAGINA_ID)) {
+                produtoRepository.obterProdutoCatalogoPagina(
+                    bundle.getLong(Constantes.CATALOGO_ID),
+                    bundle.getLong(Constantes.CATALOGO_PAGINA_ID)
+                )
+            } else if (bundle.containsKey(Constantes.CATALOGO_ID)) {
+                produtoRepository.obterProdutoCatalogo(bundle.getLong(Constantes.CATALOGO_ID))
+            } else {
+                produtoRepository.getAll()
+            }
 
+
+        }, {
+            binding.fragmentProdutoListaRegistros.text = "${it?.size}";
+            adapter.carregarRegistros(it)
         }, {
             Funcoes.alertaThrowable(it)
         }, true)

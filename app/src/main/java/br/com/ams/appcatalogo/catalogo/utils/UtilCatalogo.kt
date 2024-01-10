@@ -8,13 +8,20 @@ import org.greenrobot.eventbus.EventBus
 object UtilCatalogo {
 
     fun listarProdutosDoCatalogo(catalogoId: Long, catalogoIdPagina: Long? = null) {
-        EventBus.getDefault().post(
+        val msg = if (catalogoIdPagina != null) {
             MessageBusIdentificador(
                 Constantes.NT_CONSULTA_PRODUTO, bundleOf(
-                    "CATALOGO_ID" to catalogoId,
-                    "CATALOGO_PAGINA_ID" to catalogoIdPagina,
+                    Constantes.CATALOGO_ID to catalogoId,
+                    Constantes.CATALOGO_PAGINA_ID to catalogoIdPagina,
                 )
             )
-        )
+        } else {
+            MessageBusIdentificador(
+                Constantes.NT_CONSULTA_PRODUTO, bundleOf(
+                    Constantes.CATALOGO_ID to catalogoId
+                )
+            )
+        }
+        EventBus.getDefault().post(msg)
     }
 }

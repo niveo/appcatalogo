@@ -236,9 +236,9 @@ class AtualizarDadosServiceWorker(
         }
     }
 
-    class AtualizaCampo(val id: Long, val campo: String)
+    inner class AtualizaCampo(val id: Long, val campo: String)
 
-    class AtualizaTabela(
+    inner class AtualizaTabela(
         val id: Long,
         val tabela: String,
         var valores: ArrayList<ContentValues> = ArrayList()

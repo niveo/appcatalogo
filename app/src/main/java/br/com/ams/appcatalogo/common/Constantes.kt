@@ -12,4 +12,6 @@ object Constantes {
 
     const val NT_CONSULTA_PRODUTO = "NT_CONSULTA_PRODUTO"
 
+    const val CATALOGO_ID = "CATALOGO_ID"
+    const val CATALOGO_PAGINA_ID = "CATALOGO_PAGINA_ID"
 }

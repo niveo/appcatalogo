@@ -56,15 +56,15 @@ object ValorRealUtil {
             pattern,
             DecimalFormatSymbols(Locale("pt", "BR"))
         )
-        return decimalFormat.format(value)
+        return decimalFormat.format(value ?: 0)
     }
 
-    fun formatarValorReal(value: Double?, inicial: Boolean): String? {
+    fun formatarValorReal(value: Double? = 0.0, inicial: Boolean): String? {
         val decimalFormat: NumberFormat = DecimalFormat(
             (if (inicial) "R$ " else "") + "#,##0.00",
             DecimalFormatSymbols(Locale("pt", "BR"))
         )
-        return decimalFormat.format(value)
+        return decimalFormat.format(value ?: 0)
     }
 
     fun formatarValorReal(value: Float?): String? {
@@ -76,7 +76,7 @@ object ValorRealUtil {
             (if (inicial) "R$ " else "") + "#,##0.00",
             DecimalFormatSymbols(Locale("pt", "BR"))
         )
-        return decimalFormat.format(value)
+        return decimalFormat.format(value ?: 0)
     }
 
 
