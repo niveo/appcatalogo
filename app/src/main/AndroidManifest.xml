@@ -57,7 +57,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".catalogo.VisualizaImagemActivity"
+            android:name=".catalogo.CatalogoImagemActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"

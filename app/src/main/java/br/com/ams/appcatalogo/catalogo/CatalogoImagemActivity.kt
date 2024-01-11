@@ -3,37 +3,26 @@ package br.com.ams.appcatalogo.catalogo
 
 import android.annotation.SuppressLint
 import android.graphics.PointF
-import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.PopupMenu
-import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
-import androidx.room.Room
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.Funcoes
 import br.com.ams.appcatalogo.common.TaskObserver
-import br.com.ams.appcatalogo.database.AppDatabase
-import br.com.ams.appcatalogo.databinding.ActivityVisualizaImagemBinding
+import br.com.ams.appcatalogo.databinding.ActivityCatalogoImagemBinding
 import br.com.ams.appcatalogo.repository.ProdutoRepository
-import com.blankj.utilcode.util.ImageUtils
-import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.example.imagekit.android.picasso_extension.createWithPicasso
 import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.TransformationPosition
-import org.greenrobot.eventbus.EventBus
-import java.io.File
 import javax.inject.Inject
 
-class VisualizaImagemActivity : AppCompatActivity() {
+class CatalogoImagemActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityVisualizaImagemBinding
+    lateinit var binding: ActivityCatalogoImagemBinding
 
     @Inject
     lateinit var produtoRepository: ProdutoRepository
@@ -41,7 +30,7 @@ class VisualizaImagemActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityVisualizaImagemBinding.inflate(layoutInflater)
+        binding = ActivityCatalogoImagemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val extras = intent.extras

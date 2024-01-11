@@ -96,7 +96,7 @@ class CatalogoPaginaFragment : DialogFragment() {
                         val registro = dataAdapter.obterRegistro(position)
                         val intent = Intent(
                             this@CatalogoPaginaFragment.context,
-                            VisualizaImagemActivity::class.java
+                            CatalogoImagemActivity::class.java
                         )
                         intent.putExtra(Constantes.KEY_CATALOGO_IDENTIFICADOR, identificador)
                         intent.putExtra(Constantes.KEY_CATALOGO_CODIGO, registro.catalogoId)
