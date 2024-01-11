@@ -26,8 +26,12 @@ class CatalogoViewModel @Inject constructor(
     private val catalogoRepository: CatalogoRepository
 ) : ViewModel() {
 
-    private var _registros = MutableStateFlow(catalogoRepository.getAll())
+    private var _registros = MutableStateFlow<List<Catalogo>>(arrayListOf())
     val registros = _registros.asStateFlow()
+
+    init {
+        carregarRegistros()
+    }
 
     private fun carregarRegistros() {
         _registros.value = catalogoRepository.getAll()
@@ -36,7 +40,6 @@ class CatalogoViewModel @Inject constructor(
     fun atualizarRegistros(context: Context, lifecycleOwner: LifecycleOwner) {
         val id = AtualizarDadosServiceWorkerStarter(context).iniciar()
         val mWorkManager = WorkManager.getInstance(context)
-
         mWorkManager.getWorkInfoByIdLiveData(id)
             .observe(lifecycleOwner, Observer {
                 if (it.state.isFinished) {

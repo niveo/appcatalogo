@@ -30,9 +30,7 @@ private const val PARAM_IDENTIFICADOR: String = "PARAM_IDENTIFICADOR"
 
 class CatalogoPaginaFragment : DialogFragment() {
     private lateinit var binding: FragmentCatalogoPaginaBinding
-    private var codigo: Long? = null
-    private var descricao: String? = null
-    private var identificador: String? = null
+
     private lateinit var dataAdapter: CatalogoPaginaDataAdapter
 
     private val viewModel: CatalogoPaginaViewModel by activityViewModels()
@@ -54,9 +52,11 @@ class CatalogoPaginaFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            codigo = it.getLong(PARAM_CODIGO)
-            identificador = it.getString(PARAM_IDENTIFICADOR)
-            descricao = it.getString(PARAM_DESCRICAO, "")
+            viewModel.carregarDadosView(
+                it.getLong(PARAM_CODIGO),
+                it.getString(PARAM_DESCRICAO, ""),
+                it.getString(PARAM_IDENTIFICADOR)!!
+            )
         }
     }
 
@@ -86,11 +86,11 @@ class CatalogoPaginaFragment : DialogFragment() {
             dismiss()
         }
 
-        binding.txtDescricao.text = this.descricao
+        binding.txtDescricao.text = this.viewModel.descricao
 
         dataAdapter =
             CatalogoPaginaDataAdapter(
-                this.identificador!!,
+                this.viewModel.identificador,
                 object : CatalogoPaginaDataAdapter.OnItemTouchListener {
                     override fun onDetalhar(view: View, position: Int) {
                         val registro = dataAdapter.obterRegistro(position)
@@ -98,7 +98,10 @@ class CatalogoPaginaFragment : DialogFragment() {
                             this@CatalogoPaginaFragment.context,
                             CatalogoImagemActivity::class.java
                         )
-                        intent.putExtra(Constantes.KEY_CATALOGO_IDENTIFICADOR, identificador)
+                        intent.putExtra(
+                            Constantes.KEY_CATALOGO_IDENTIFICADOR,
+                            viewModel.identificador
+                        )
                         intent.putExtra(Constantes.KEY_CATALOGO_CODIGO, registro.catalogoId)
                         intent.putExtra(Constantes.KEY_CATALOGO_PAGINA_CODIGO, registro.id)
                         intent.putExtra(Constantes.KEY_CATALOGO_NOME, registro.name)
@@ -123,7 +126,6 @@ class CatalogoPaginaFragment : DialogFragment() {
             false
         )
 
-        viewModel.carregarCatalogoPaginaMapeados(this.codigo!!)
         viewModel.registros.onEach {
             dataAdapter.carregarRegistros(it)
         }.launchIn(lifecycleScope)

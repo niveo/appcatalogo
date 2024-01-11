@@ -13,10 +13,25 @@ class CatalogoPaginaViewModel @Inject
 constructor(private val catalogoPaginaRepository: CatalogoPaginaRepository) :
     ViewModel() {
 
+    private var _codigo: Long? = null
+    val codigo: Long
+        get() = _codigo!!
+
+    private var _descricao: String? = null
+    val descricao: String
+        get() = _descricao!!
+
+    private var _identificador: String? = null
+    val identificador: String
+        get() = _identificador!!
+
     private var _registros = MutableStateFlow<List<CatalogoPagina>>(arrayListOf())
     val registros = _registros.asStateFlow()
 
-    fun carregarCatalogoPaginaMapeados(idCatalogo: Long) {
-        _registros.value = catalogoPaginaRepository.obterCatalogoPaginaMapeados(idCatalogo)
+    fun carregarDadosView(codigo: Long, descricao: String, identificador: String) {
+        this._codigo = codigo;
+        this._descricao = descricao;
+        this._identificador = identificador;
+        _registros.value = catalogoPaginaRepository.obterCatalogoPaginaMapeados(this.codigo)
     }
 }
