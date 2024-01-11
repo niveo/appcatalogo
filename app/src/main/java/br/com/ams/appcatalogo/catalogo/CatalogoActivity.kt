@@ -5,9 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.work.WorkManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoDataAdapter
@@ -15,8 +12,6 @@ import br.com.ams.appcatalogo.common.*
 import br.com.ams.appcatalogo.databinding.ActivityCatalogoBinding
 import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
 import br.com.ams.appcatalogo.produto.ProdutoListaFragment
-import br.com.ams.appcatalogo.repository.CatalogoRepository
-import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorker
 import br.com.ams.appcatalogo.viewsmodel.CatalogoViewModel
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationException
@@ -30,18 +25,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import javax.inject.Inject
 import androidx.activity.viewModels
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class CatalogoActivity : AppCompatActivity() {
     private var dialog: ProgressDialogUtil? = null
-    private lateinit var cardViewCatalogoAdapter: CatalogoDataAdapter
+    private lateinit var adapter: CatalogoDataAdapter
     private lateinit var binding: ActivityCatalogoBinding
 
     private val viewModel: CatalogoViewModel by viewModels()
@@ -60,11 +52,11 @@ class CatalogoActivity : AppCompatActivity() {
 
         dialog = ProgressDialogUtil(this)
 
-        cardViewCatalogoAdapter = CatalogoDataAdapter(
+        adapter = CatalogoDataAdapter(
             object : CatalogoDataAdapter.OnItemTouchListener {
                 override fun onDetalhar(view: View, position: Int) {
 
-                    val catalogoSelecionado = cardViewCatalogoAdapter.getItem(position)
+                    val catalogoSelecionado = adapter.getItem(position)
 
                     CatalogoPaginaFragment.newInstance(
                         catalogoSelecionado.id,
@@ -78,12 +70,12 @@ class CatalogoActivity : AppCompatActivity() {
         Funcoes.configurarRecyclerDefault(
             this,
             binding.activityCatalogoRecycler,
-            cardViewCatalogoAdapter,
+            adapter,
             false
         )
 
         viewModel.registros.onEach {
-            cardViewCatalogoAdapter.carregarRegistros(it)
+            adapter.carregarRegistros(it)
         }.launchIn(lifecycleScope)
     }
 

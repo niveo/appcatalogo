@@ -7,25 +7,25 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentManager
-import br.com.ams.appcatalogo.ApplicationLocate
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoProdutosCordenadasDataAdapter
 import br.com.ams.appcatalogo.common.Funcoes
-import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.CatalogoProdutosCordenadasFragmentBinding
-import br.com.ams.appcatalogo.repository.ProdutoRepository
-import com.blankj.utilcode.util.LogUtils
+import br.com.ams.appcatalogo.viewsmodel.CatalogoProdutosCordenadasViewModel
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import javax.inject.Inject
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+
 
 class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
 
-    private lateinit var cardViewProdutosCordenadas: CatalogoProdutosCordenadasDataAdapter
+    private lateinit var adapter: CatalogoProdutosCordenadasDataAdapter
     private lateinit var binding: CatalogoProdutosCordenadasFragmentBinding
 
-    @Inject
-    lateinit var produtoRepository: ProdutoRepository
+    private val viewModel: CatalogoProdutosCordenadasViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +39,7 @@ class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val longArray = arguments?.getLongArray(EXTRA_PRODUTOS)
-
-        cardViewProdutosCordenadas = CatalogoProdutosCordenadasDataAdapter(
+        adapter = CatalogoProdutosCordenadasDataAdapter(
             object : CatalogoProdutosCordenadasDataAdapter.OnItemTouchListener {
                 override fun onDetalhar(view: View, position: Int) {
                     ToastUtils.showLong(getString(R.string.nao_implementado))
@@ -56,10 +54,21 @@ class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
         Funcoes.configurarRecyclerDefault(
             view.context,
             binding.produtosCordenadasFragmentdialogRecycler,
-            cardViewProdutosCordenadas,
+            adapter,
             true
         )
-        carregarTransacao(longArray!!)
+
+
+        viewModel.registros.onEach {
+            if (it.isEmpty()) {
+                ToastUtils.showLong(getString(R.string.registros_nao_localizados))
+                dismiss()
+            } else {
+                adapter.carregarRegistros(it)
+            }
+        }.launchIn(lifecycleScope)
+
+        viewModel.carregarRegistros(arguments?.getLongArray(EXTRA_PRODUTOS))
     }
 
     override fun onResume() {
@@ -68,22 +77,6 @@ class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
         params.width = LinearLayout.LayoutParams.MATCH_PARENT
         params.height = LinearLayout.LayoutParams.MATCH_PARENT
         dialog!!.window!!.attributes = params as WindowManager.LayoutParams
-    }
-
-    fun carregarTransacao(produtos: LongArray) {
-        LogUtils.w(produtos)
-        TaskObserver.runInSingle(requireContext(), {
-            produtoRepository.obterProdutoCodigos(produtos.asList())
-        }, {
-            if (it.isNullOrEmpty()) {
-                ToastUtils.showLong(getString(R.string.registros_nao_localizados))
-                dismiss()
-            } else {
-                cardViewProdutosCordenadas.carregarRegistros(it)
-            }
-        }, {
-            Funcoes.alertaThrowable(it)
-        }, true)
     }
 
     fun openDialog(fm: FragmentManager) {

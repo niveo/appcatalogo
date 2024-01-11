@@ -1,6 +1,5 @@
 package br.com.ams.appcatalogo.catalogo
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +16,6 @@ import androidx.lifecycle.lifecycleScope
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoPaginaDataAdapter
 import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
-import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.Funcoes
 import br.com.ams.appcatalogo.databinding.FragmentCatalogoPaginaBinding
 import br.com.ams.appcatalogo.viewsmodel.CatalogoPaginaViewModel
@@ -31,7 +29,7 @@ private const val PARAM_IDENTIFICADOR: String = "PARAM_IDENTIFICADOR"
 class CatalogoPaginaFragment : DialogFragment() {
     private lateinit var binding: FragmentCatalogoPaginaBinding
 
-    private lateinit var dataAdapter: CatalogoPaginaDataAdapter
+    private lateinit var adapter: CatalogoPaginaDataAdapter
 
     private val viewModel: CatalogoPaginaViewModel by activityViewModels()
 
@@ -88,28 +86,22 @@ class CatalogoPaginaFragment : DialogFragment() {
 
         binding.txtDescricao.text = this.viewModel.descricao
 
-        dataAdapter =
+        adapter =
             CatalogoPaginaDataAdapter(
                 this.viewModel.identificador,
                 object : CatalogoPaginaDataAdapter.OnItemTouchListener {
                     override fun onDetalhar(view: View, position: Int) {
-                        val registro = dataAdapter.obterRegistro(position)
-                        val intent = Intent(
-                            this@CatalogoPaginaFragment.context,
-                            CatalogoImagemActivity::class.java
-                        )
-                        intent.putExtra(
-                            Constantes.KEY_CATALOGO_IDENTIFICADOR,
-                            viewModel.identificador
-                        )
-                        intent.putExtra(Constantes.KEY_CATALOGO_CODIGO, registro.catalogoId)
-                        intent.putExtra(Constantes.KEY_CATALOGO_PAGINA_CODIGO, registro.id)
-                        intent.putExtra(Constantes.KEY_CATALOGO_NOME, registro.name)
-                        startActivity(intent)
+                        val registro = adapter.obterRegistro(position)
+                        CatalogoImagemFragment.newInstance(
+                            viewModel.identificador,
+                            registro.name!!,
+                            registro.catalogoId!!,
+                            registro.id,
+                        ).openDialog(parentFragmentManager)
                     }
 
                     override fun onMenu(v: View, position: Int) {
-                        val registro = dataAdapter.obterRegistro(position)
+                        val registro = adapter.obterRegistro(position)
                         showMenu(
                             v,
                             R.menu.menu_catalogo_pagina,
@@ -122,12 +114,12 @@ class CatalogoPaginaFragment : DialogFragment() {
         Funcoes.configurarRecyclerDefault(
             requireContext(),
             binding.activityCatalogopaginaRecycler,
-            dataAdapter,
+            adapter,
             false
         )
 
         viewModel.registros.onEach {
-            dataAdapter.carregarRegistros(it)
+            adapter.carregarRegistros(it)
         }.launchIn(lifecycleScope)
     }
 

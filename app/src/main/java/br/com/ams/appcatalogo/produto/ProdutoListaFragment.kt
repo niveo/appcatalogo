@@ -6,22 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import br.com.ams.appcatalogo.ApplicationLocate
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import br.com.ams.appcatalogo.R
-import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.Funcoes
-import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.FragmentProdutoListaBinding
 import br.com.ams.appcatalogo.produto.dataadapter.ProdutoListaDataAdapter
-import br.com.ams.appcatalogo.repository.ProdutoRepository
-import javax.inject.Inject
+import br.com.ams.appcatalogo.viewsmodel.ProdutoViewModel
+import com.blankj.utilcode.util.LogUtils
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class ProdutoListaFragment : DialogFragment() {
     private lateinit var binding: FragmentProdutoListaBinding
     private lateinit var adapter: ProdutoListaDataAdapter
 
-    @Inject
-    lateinit var produtoRepository: ProdutoRepository
+    private val viewModel: ProdutoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +45,14 @@ class ProdutoListaFragment : DialogFragment() {
         )
 
         arguments?.let {
-            carregarRegistros(it)
+            viewModel.carregarRegistros(it)
         }
+
+        viewModel.registros.onEach {
+            LogUtils.w(it)
+            binding.fragmentProdutoListaRegistros.text = "${it.size}";
+            adapter.carregarRegistros(it)
+        }.launchIn(lifecycleScope)
     }
 
     override fun getTheme(): Int {
@@ -69,28 +75,4 @@ class ProdutoListaFragment : DialogFragment() {
             }
     }
 
-    private fun carregarRegistros(bundle: Bundle?) {
-        binding.fragmentProdutoListaRegistros.text = "";
-        TaskObserver.runInSingle(requireContext(), {
-            if (bundle == null) {
-                produtoRepository.getAll()
-            } else if (bundle.containsKey(Constantes.CATALOGO_ID) && bundle.containsKey(Constantes.CATALOGO_PAGINA_ID)) {
-                produtoRepository.obterProdutoCatalogoPagina(
-                    bundle.getLong(Constantes.CATALOGO_ID),
-                    bundle.getLong(Constantes.CATALOGO_PAGINA_ID)
-                )
-            } else if (bundle.containsKey(Constantes.CATALOGO_ID)) {
-                produtoRepository.obterProdutoCatalogo(bundle.getLong(Constantes.CATALOGO_ID))
-            } else {
-                produtoRepository.getAll()
-            }
-
-
-        }, {
-            binding.fragmentProdutoListaRegistros.text = "${it?.size}";
-            adapter.carregarRegistros(it)
-        }, {
-            Funcoes.alertaThrowable(it)
-        }, true)
-    }
 }

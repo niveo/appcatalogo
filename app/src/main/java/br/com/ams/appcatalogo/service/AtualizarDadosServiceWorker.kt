@@ -190,9 +190,13 @@ class AtualizarDadosServiceWorker @AssistedInject constructor(
             try {
                 this.beginTransaction()
                 registrosAtualizaTabelas.forEach { tabelaAtualiza ->
+                    LogUtils.i(tabelaAtualiza.tabela, tabelaAtualiza.valores.size)
                     tabelaAtualiza.valores.forEach {
+                        if(tabelaAtualiza.tabela == "produto"){
+                            LogUtils.i(tabelaAtualiza.valores)
+                        }
                         try {
-                         this.insert(tabelaAtualiza.tabela, SQLiteDatabase.CONFLICT_REPLACE, it)
+                            this.insert(tabelaAtualiza.tabela, SQLiteDatabase.CONFLICT_REPLACE, it)
                         } catch (e: Exception) {
                             LogUtils.e(tabelaAtualiza.tabela, it)
                             throw Exception("Erro inserir o registro " + it + " da tabela ${tabelaAtualiza.tabela}")

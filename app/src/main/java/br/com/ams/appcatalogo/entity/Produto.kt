@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "produto")
-class Produto(
+data class Produto(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "referencia") val referencia: String?,
     @ColumnInfo(name = "descricao") val descricao: String?,
