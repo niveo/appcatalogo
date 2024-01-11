@@ -12,16 +12,17 @@ import androidx.annotation.MenuRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import br.com.ams.appcatalogo.ApplicationLocate
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoPaginaDataAdapter
 import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.Funcoes
-import br.com.ams.appcatalogo.common.TaskObserver
 import br.com.ams.appcatalogo.databinding.FragmentCatalogoPaginaBinding
-import br.com.ams.appcatalogo.repository.CatalogoPaginaRepository
-import javax.inject.Inject
+import br.com.ams.appcatalogo.viewsmodel.CatalogoPaginaViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 private const val PARAM_CODIGO: String = "PARAM_CODIGO"
 private const val PARAM_DESCRICAO: String = "PARAM_DESCRICAO"
@@ -30,12 +31,11 @@ private const val PARAM_IDENTIFICADOR: String = "PARAM_IDENTIFICADOR"
 class CatalogoPaginaFragment : DialogFragment() {
     private lateinit var binding: FragmentCatalogoPaginaBinding
     private var codigo: Long? = null
-    private var identificador: String? = null
     private var descricao: String? = null
-    private var cardViewCatalogoAdapter: CatalogoPaginaDataAdapter? = null
+    private var identificador: String? = null
+    private lateinit var dataAdapter: CatalogoPaginaDataAdapter
 
-    @Inject
-    lateinit var catalogoPaginaRepository: CatalogoPaginaRepository
+    private val viewModel: CatalogoPaginaViewModel by activityViewModels()
 
     companion object {
         private const val DIALOG_TAG = "CatalogoPaginaFragment"
@@ -54,9 +54,9 @@ class CatalogoPaginaFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            descricao = it.getString(PARAM_DESCRICAO, "")
             codigo = it.getLong(PARAM_CODIGO)
             identificador = it.getString(PARAM_IDENTIFICADOR)
+            descricao = it.getString(PARAM_DESCRICAO, "")
         }
     }
 
@@ -86,12 +86,14 @@ class CatalogoPaginaFragment : DialogFragment() {
             dismiss()
         }
 
-        cardViewCatalogoAdapter =
+        binding.txtDescricao.text = this.descricao
+
+        dataAdapter =
             CatalogoPaginaDataAdapter(
                 this.identificador!!,
                 object : CatalogoPaginaDataAdapter.OnItemTouchListener {
                     override fun onDetalhar(view: View, position: Int) {
-                        val registro = cardViewCatalogoAdapter!!.obterRegistro(position)
+                        val registro = dataAdapter.obterRegistro(position)
                         val intent = Intent(
                             this@CatalogoPaginaFragment.context,
                             VisualizaImagemActivity::class.java
@@ -104,8 +106,7 @@ class CatalogoPaginaFragment : DialogFragment() {
                     }
 
                     override fun onMenu(v: View, position: Int) {
-                        val registro =
-                            cardViewCatalogoAdapter!!.obterRegistro(position)
+                        val registro = dataAdapter.obterRegistro(position)
                         showMenu(
                             v,
                             R.menu.menu_catalogo_pagina,
@@ -118,11 +119,14 @@ class CatalogoPaginaFragment : DialogFragment() {
         Funcoes.configurarRecyclerDefault(
             requireContext(),
             binding.activityCatalogopaginaRecycler,
-            cardViewCatalogoAdapter!!,
+            dataAdapter,
             false
         )
 
-        this.carregarCatalogo()
+        viewModel.carregarCatalogoPaginaMapeados(this.codigo!!)
+        viewModel.registros.onEach {
+            dataAdapter.carregarRegistros(it)
+        }.launchIn(lifecycleScope)
     }
 
     private fun showMenu(
@@ -155,20 +159,5 @@ class CatalogoPaginaFragment : DialogFragment() {
             }
         }
         popup.show()
-    }
-
-    fun carregarCatalogo() {
-        binding.txtDescricao.text = this.descricao
-        carregarRegistros()
-    }
-
-    private fun carregarRegistros() {
-        TaskObserver.runInSingle(requireContext(), {
-            catalogoPaginaRepository.obterCatalogoPaginaMapeados(this.codigo!!)
-        }, {
-            cardViewCatalogoAdapter!!.carregarRegistros(it)
-        }, {
-            Funcoes.alertaThrowable(it)
-        }, true)
     }
 }
