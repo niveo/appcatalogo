@@ -49,6 +49,7 @@ class CatalogoPaginaFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             viewModel.carregarDadosView(
                 it.getLong(PARAM_CODIGO),
@@ -79,10 +80,6 @@ class CatalogoPaginaFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.btnSair.setOnClickListener {
-            dismiss()
-        }
 
         binding.txtDescricao.text = this.viewModel.descricao
 

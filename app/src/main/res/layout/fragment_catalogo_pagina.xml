@@ -18,15 +18,4 @@
         android:layout_weight="1"
         android:scrollbars="vertical" />
 
-    <Button
-        android:id="@+id/btnSair"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_height"
-        android:layout_marginStart="@dimen/btn_margin_start"
-        android:layout_marginEnd="@dimen/btn_margin_end"
-        android:theme="@style/AppTheme.Button.Sair"/>
-
-
-
-
 </androidx.appcompat.widget.LinearLayoutCompat>

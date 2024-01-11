@@ -35,6 +35,7 @@ class CatalogoImagemFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
 
             codigoCatalogo = it.getLong(Constantes.KEY_CATALOGO_CODIGO)
@@ -102,6 +103,8 @@ class CatalogoImagemFragment : DialogFragment() {
             }
         }.launchIn(lifecycleScope)
     }
+
+
 
     override fun getTheme(): Int {
         return R.style.DialogTheme

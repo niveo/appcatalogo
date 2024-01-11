@@ -71,6 +71,7 @@ class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
         viewModel.carregarRegistros(arguments?.getLongArray(EXTRA_PRODUTOS))
     }
 
+
     override fun onResume() {
         super.onResume()
         val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
