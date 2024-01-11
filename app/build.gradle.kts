@@ -55,13 +55,16 @@ kapt {
 
 dependencies {
 
-    val room_version by extra("2.6.1")
-    val okhttp3_version by extra("4.10.0")
-    val lifecycle_version by extra("2.6.2")
+    val room_version = "2.6.1"
+    val okhttp3_version = "4.11.0"
+    val lifecycle_version = "2.6.2"
     val activity_version = "1.8.2"
     val work_version = "2.9.0"
     val coroutinesVersion = "1.7.1"
     val hilt_version = "2.49"
+    val imagekit_version = "3.0.1"
+    val work_runtime_version = "2.9.0"
+    val retrofit_version = "2.9.0"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -82,7 +85,6 @@ dependencies {
 
 
     implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
-    implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.blankj:utilcodex:1.31.1")
 
     // Lifecycle components
@@ -93,8 +95,9 @@ dependencies {
 
     // Retrofit & Gson
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
 
     implementation("org.greenrobot:eventbus:3.3.1")
 
@@ -110,15 +113,15 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
     implementation("androidx.hilt:hilt-work:1.1.0")
 
-    implementation("androidx.work:work-runtime:2.9.0")
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.work:work-runtime:$work_runtime_version")
+    implementation("androidx.work:work-runtime-ktx:$work_runtime_version")
 
     implementation("com.auth0.android:auth0:2.+")
 
-    implementation("com.github.imagekit-developer.imagekit-android:imagekit-android:3.0.1")
-    implementation("com.github.imagekit-developer.imagekit-android:imagekit-picasso-extension:3.0.1")
+    implementation("com.github.imagekit-developer.imagekit-android:imagekit-android:$imagekit_version")
+    implementation("com.github.imagekit-developer.imagekit-android:imagekit-picasso-extension:$imagekit_version")
 
-    implementation("com.squareup.okhttp3:okhttp:okhttp3_version")
+    implementation("com.squareup.okhttp3:okhttp:$okhttp3_version")
     implementation("com.squareup.okhttp3:logging-interceptor:${okhttp3_version}")
 
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
