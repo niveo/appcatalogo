@@ -53,7 +53,6 @@ class CatalogoPaginaFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ApplicationLocate.component.inject(this)
         arguments?.let {
             descricao = it.getString(PARAM_DESCRICAO, "")
             codigo = it.getLong(PARAM_CODIGO)

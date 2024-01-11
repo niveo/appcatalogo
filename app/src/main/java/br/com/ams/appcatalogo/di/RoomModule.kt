@@ -1,6 +1,7 @@
 package br.com.ams.appcatalogo.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -17,12 +18,16 @@ import br.com.ams.appcatalogo.repository.ProdutoDataSource
 import br.com.ams.appcatalogo.repository.ProdutoRepository
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-class RoomModule(mApplication: Application) {
-
-    private var appDatabase: AppDatabase? = null
+@InstallIn(SingletonComponent::class)
+class RoomModule {
 
     private val MIGRATION_1_2 = object : Migration(1, 2) {
         override fun migrate(database: SupportSQLiteDatabase) {
@@ -30,20 +35,14 @@ class RoomModule(mApplication: Application) {
         }
     }
 
-    init {
-        appDatabase = Room.databaseBuilder(
-            mApplication!!.applicationContext,
-            AppDatabase::class.java, "db-catalogo"
-        ).allowMainThreadQueries()
-            .addMigrations(MIGRATION_1_2)
-            .build()
-    }
-
     @Singleton
     @Provides
-    fun providesRoomDatabase(): AppDatabase {
-        return appDatabase!!
-    }
+    fun providesRoomDatabase(@ApplicationContext appContext: Context) = Room.databaseBuilder(
+        appContext,
+        AppDatabase::class.java, "db-catalogo"
+    ).allowMainThreadQueries()
+        .addMigrations(MIGRATION_1_2)
+        .build()
 
     @Singleton
     @Provides

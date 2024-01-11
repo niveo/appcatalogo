@@ -1,33 +1,36 @@
 package br.com.ams.appcatalogo
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import br.com.ams.appcatalogo.common.Constantes
-import br.com.ams.appcatalogo.di.AppComponent
-import br.com.ams.appcatalogo.di.AppModule
-import br.com.ams.appcatalogo.di.DaggerAppComponent
-import br.com.ams.appcatalogo.di.RoomModule
 import com.blankj.utilcode.util.LogUtils
 import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.TransformationPosition
 import com.imagekit.android.entity.UploadPolicy
+import dagger.hilt.android.HiltAndroidApp
 import io.github.cdimascio.dotenv.dotenv
+import javax.inject.Inject
 
-class ApplicationLocate : Application() {
+@HiltAndroidApp
+class ApplicationLocate : Application(), Configuration.Provider  {
 
     val dotenv = dotenv {
         directory = "./assets"
         filename = "env"
     }
 
+    @Inject lateinit var workerFactory: HiltWorkerFactory
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+
     override fun onCreate() {
         super.onCreate()
 
         instance = this
-
-        component = DaggerAppComponent.builder()
-            .appModule(AppModule(this))
-            .roomModule(RoomModule(this))
-            .build()
 
         ImageKit.init(
             context = applicationContext,
@@ -42,9 +45,7 @@ class ApplicationLocate : Application() {
 
         com.blankj.utilcode.util.Utils.init(this)
         initLog()
-
     }
-
 
     fun initLog() {
         val config = LogUtils.getConfig()
@@ -76,7 +77,7 @@ class ApplicationLocate : Application() {
         lateinit var instance: ApplicationLocate
             private set
 
-        lateinit var component: AppComponent
-            private set
+      /*  lateinit var component: AppComponent
+            private set*/
     }
 }

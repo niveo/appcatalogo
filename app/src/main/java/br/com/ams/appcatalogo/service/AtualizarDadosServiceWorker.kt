@@ -5,12 +5,9 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Environment
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkRequest
-import androidx.work.Worker
+import androidx.hilt.work.HiltWorker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.database.AppDatabase
 import br.com.ams.appcatalogo.database.VERSION_DB
 import br.com.ams.appcatalogo.retrofit.RetrofitConfig
@@ -18,20 +15,22 @@ import com.blankj.utilcode.util.FileIOUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ZipUtils
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.UUID
-import javax.inject.Inject
 
 const val TAG_ATUALIZAR_DADOS_WORK = "ATUALIZAR_DADOS_WORK"
 
-class AtualizarDadosServiceWorker(
-    private val appContext: Context,
-    private val workerParams: WorkerParameters
+@HiltWorker
+class AtualizarDadosServiceWorker @AssistedInject constructor(
+    private val providesRoomDatabase: AppDatabase,
+    @Assisted private val appContext: Context,
+    @Assisted private val workerParams: WorkerParameters,
 ) :
-    Worker(appContext, workerParams) {
-
-    @Inject
-    lateinit var providesRoomDatabase: AppDatabase
+    CoroutineWorker(appContext, workerParams) {
 
     private lateinit var registrosAtualizaTabelas: ArrayList<AtualizaTabela>
     private lateinit var registrosAtualizaCampos: ArrayList<AtualizaCampo>
@@ -39,51 +38,38 @@ class AtualizarDadosServiceWorker(
     private val dirDownload =
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
+        return withContext(Dispatchers.IO) {
+            registrosAtualizaTabelas = ArrayList()
+            registrosAtualizaCampos = ArrayList()
+            var nomArquivoDb: File? = null
+            try {
 
-        registrosAtualizaTabelas = ArrayList()
-        registrosAtualizaCampos = ArrayList()
+                if (!FileUtils.createOrExistsDir(dirDownload)) {
+                    LogUtils.e("Não foi possivel criar o diretorio de download")
+                    throw Exception("Não foi possivel criar o diretorio de download")
+                }
 
-        if (!FileUtils.createOrExistsDir(dirDownload)) {
-            LogUtils.e("Não foi possivel criar o diretorio de download")
-            return Result.failure()
-        }
+                nomArquivoDb = baixarArquivo()!!
 
-        ApplicationLocate.component.inject(this)
+                carregarValores(
+                    nomArquivoDb
+                )
 
-        val nomArquivoDb = baixarArquivo() ?: return Result.failure()
-        LogUtils.w(nomArquivoDb)
-        try {
+                atualizarRegistros()
 
-            carregarValores(
-                nomArquivoDb
-            )
+                Result.success()
 
-            atualizarRegistros()
-
-        } catch (e: Exception) {
-            LogUtils.e(e)
-            return Result.failure()
-        } finally {
-            LogUtils.w("Removendo arquivo ${nomArquivoDb}")
-            FileUtils.delete(nomArquivoDb)
-        }
-
-        return Result.success()
-    }
-
-    companion object {
-        fun iniciar(context: Context): UUID {
-            val uploadWorkRequest: WorkRequest =
-                OneTimeWorkRequestBuilder<AtualizarDadosServiceWorker>()
-                    .addTag(TAG_ATUALIZAR_DADOS_WORK)
-                    .build()
-            WorkManager
-                .getInstance(context)
-                .enqueue(uploadWorkRequest)
-            return uploadWorkRequest.id
+            } catch (e: Exception) {
+                LogUtils.e(e)
+                Result.failure()
+            } finally {
+                LogUtils.w("Removendo arquivo ${nomArquivoDb}")
+                FileUtils.delete(nomArquivoDb)
+            }
         }
     }
+
 
     private fun baixarArquivo(): File? {
         val newFile = File(
@@ -110,7 +96,7 @@ class AtualizarDadosServiceWorker(
                         return filesDb.get(0)
                     }
                 } finally {
-                    LogUtils.w("Removendo arquivo ${newFile}")
+                    LogUtils.i("Removendo arquivo ${newFile}")
                     //FileUtils.delete(newFile)
                 }
 
@@ -198,25 +184,15 @@ class AtualizarDadosServiceWorker(
         }
     }
 
+
     private fun atualizarRegistros() {
-        with(
-            SQLiteDatabase.openDatabase(
-                this.providesRoomDatabase.openHelper.writableDatabase.path.toString(),
-                null,
-                SQLiteDatabase.OPEN_READWRITE
-            )
-        ) {
+        with(providesRoomDatabase.openHelper.writableDatabase) {
             try {
                 this.beginTransaction()
                 registrosAtualizaTabelas.forEach { tabelaAtualiza ->
                     tabelaAtualiza.valores.forEach {
                         try {
-                            this.insertWithOnConflict(
-                                tabelaAtualiza.tabela,
-                                "id",
-                                it,
-                                SQLiteDatabase.CONFLICT_REPLACE
-                            )
+                         this.insert(tabelaAtualiza.tabela, SQLiteDatabase.CONFLICT_REPLACE, it)
                         } catch (e: Exception) {
                             LogUtils.e(tabelaAtualiza.tabela, it)
                             throw Exception("Erro inserir o registro " + it + " da tabela ${tabelaAtualiza.tabela}")

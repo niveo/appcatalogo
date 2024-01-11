@@ -42,11 +42,7 @@ class SplashActivity : AppCompatActivity() {
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
 
-        if (Build.VERSION.SDK_INT >= 23) {
-            this.verificarPermissoes()
-        } else {
-            this.iniciarMain()
-        }
+        this.verificarPermissoes()
 
     }
 
@@ -132,9 +128,9 @@ class SplashActivity : AppCompatActivity() {
                 override fun onSuccess(credentials: Credentials) {
                     // Get the access token from the credentials object.
                     // This can be used to call APIs
-                    SPUtils.getInstance().put(Constantes.KEY_TOKEN_BEARER, credentials.accessToken)
-                    SPUtils.getInstance()
-                        .put(Constantes.KEY_TOKEN_USER_ID, credentials.user.getId())
+                    val sp = SPUtils.getInstance()
+                    sp.put(Constantes.KEY_TOKEN_BEARER, credentials.accessToken)
+                    sp.put(Constantes.KEY_TOKEN_USER_ID, credentials.user.getId())
                     carregarViewPrincipal()
                 }
             })

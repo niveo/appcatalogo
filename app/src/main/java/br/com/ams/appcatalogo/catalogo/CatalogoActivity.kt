@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.work.WorkManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
@@ -16,6 +17,7 @@ import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
 import br.com.ams.appcatalogo.produto.ProdutoListaFragment
 import br.com.ams.appcatalogo.repository.CatalogoRepository
 import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorker
+import br.com.ams.appcatalogo.viewsmodel.CatalogoViewModel
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
@@ -24,20 +26,27 @@ import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
+import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
+import androidx.activity.viewModels
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class CatalogoActivity : AppCompatActivity() {
     private var dialog: ProgressDialogUtil? = null
     private lateinit var cardViewCatalogoAdapter: CatalogoDataAdapter
     private lateinit var binding: ActivityCatalogoBinding
 
-    @Inject
-    lateinit var catalogoRepository: CatalogoRepository
+    private val viewModel: CatalogoViewModel by viewModels()
 
-    var account: Auth0 = Auth0(
+    private var account: Auth0 = Auth0(
         ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_CLIENT_ID],
         ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_DOMAIN],
     )
@@ -50,8 +59,6 @@ class CatalogoActivity : AppCompatActivity() {
         EventBus.getDefault().register(this)
 
         dialog = ProgressDialogUtil(this)
-
-        ApplicationLocate.component.inject(this)
 
         cardViewCatalogoAdapter = CatalogoDataAdapter(
             object : CatalogoDataAdapter.OnItemTouchListener {
@@ -75,17 +82,9 @@ class CatalogoActivity : AppCompatActivity() {
             false
         )
 
-        carregarRegistros()
-    }
-
-    private fun carregarRegistros() {
-        TaskObserver.runInSingle(this, {
-            catalogoRepository.getAll()
-        }, {
+        viewModel.registros.onEach {
             cardViewCatalogoAdapter.carregarRegistros(it)
-        }, {
-            Funcoes.alertaThrowable(it)
-        }, true)
+        }.launchIn(lifecycleScope)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -98,7 +97,6 @@ class CatalogoActivity : AppCompatActivity() {
 
             else -> {
                 LogUtils.w("Identificador ${event.identificador} não localizado.")
-                //ToastUtils.showLong("Identificador ${event.identificador} não localizado.")
             }
         }
     }
@@ -118,7 +116,7 @@ class CatalogoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_central_atualizar_registros -> {
-                atualizarRegistros()
+                viewModel.atualizarRegistros(this,this)
                 true
             }
 
@@ -131,17 +129,7 @@ class CatalogoActivity : AppCompatActivity() {
         }
     }
 
-    private fun atualizarRegistros() {
-        val id = AtualizarDadosServiceWorker.iniciar(this)
-        val mWorkManager = WorkManager.getInstance(this)
-        mWorkManager.getWorkInfoByIdLiveData(id)
-            .observe(this, Observer {
-                if (it.state.isFinished) {
-                    carregarRegistros()
-                    ToastUtils.showLong(R.string.registros_atualizados)
-                }
-            })
-    }
+
 
     private fun logout() {
         WebAuthProvider.logout(account)

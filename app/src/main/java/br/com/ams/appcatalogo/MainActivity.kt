@@ -14,6 +14,7 @@ import br.com.ams.appcatalogo.viewsmodel.CatalogoViewModel
 import br.com.ams.appcatalogo.viewsmodel.CatalogoViewModelFactory
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
@@ -27,8 +28,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        ApplicationLocate.component.inject(this)
 
         binding.button.setOnClickListener {
 

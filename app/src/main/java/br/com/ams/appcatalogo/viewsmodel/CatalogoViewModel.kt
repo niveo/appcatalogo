@@ -4,52 +4,45 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.entity.Catalogo
 import br.com.ams.appcatalogo.repository.CatalogoRepository
 import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorker
+import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorkerStarter
 import br.com.ams.appcatalogo.service.TAG_ATUALIZAR_DADOS_WORK
 import com.blankj.utilcode.util.LogUtils
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.flow.subscribe
+import com.blankj.utilcode.util.ToastUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-/*
-    private lateinit var viewModel: CatalogoViewModel
-
-        viewModel = ViewModelProvider(
-            this,
-            CatalogoViewModelFactory(this, catalogoRepository)
-        ).get(CatalogoViewModel::class.java)
-
-        viewModel.loadDataFromWorker(this)
- */
-class CatalogoViewModel(
-    private val context: Context,
+@HiltViewModel
+class CatalogoViewModel @Inject constructor(
     private val catalogoRepository: CatalogoRepository
 ) : ViewModel() {
 
-    val registros = catalogoRepository.getAll()
+    private var _registros = MutableStateFlow(catalogoRepository.getAll())
+    val registros = _registros.asStateFlow()
 
-    fun loadDataFromWorker(lifecycleOwner: LifecycleOwner) {
+    private fun carregarRegistros() {
+        _registros.value = catalogoRepository.getAll()
+    }
 
+    fun atualizarRegistros(context: Context, lifecycleOwner: LifecycleOwner) {
+        val id = AtualizarDadosServiceWorkerStarter(context).iniciar()
         val mWorkManager = WorkManager.getInstance(context)
 
-        mWorkManager.getWorkInfosByTagLiveData(TAG_ATUALIZAR_DADOS_WORK)
+        mWorkManager.getWorkInfoByIdLiveData(id)
             .observe(lifecycleOwner, Observer {
-                LogUtils.w(it)
-
+                if (it.state.isFinished) {
+                    carregarRegistros()
+                    ToastUtils.showLong(R.string.registros_atualizados)
+                }
             })
-
     }
 }

@@ -44,8 +44,6 @@ class VisualizaImagemActivity : AppCompatActivity() {
         binding = ActivityVisualizaImagemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ApplicationLocate.component.inject(this)
-
         val extras = intent.extras
 
         binding.btnSair.setOnClickListener {

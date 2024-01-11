@@ -23,11 +23,6 @@ class ProdutoListaFragment : DialogFragment() {
     @Inject
     lateinit var produtoRepository: ProdutoRepository
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ApplicationLocate.component.inject(this)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
