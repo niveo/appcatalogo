@@ -5,6 +5,22 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.DialogsUtils
@@ -31,7 +47,13 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        setContent {
+            MaterialTheme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    ImageViewContent()
+                }
+            }
+        }
 
         val policy = StrictMode.ThreadPolicy.Builder()
             .permitAll().build()
@@ -43,7 +65,20 @@ class SplashActivity : AppCompatActivity() {
         StrictMode.setVmPolicy(builder.build())
 
         this.verificarPermissoes()
+    }
 
+    @Composable
+    fun ImageViewContent() {
+        val image = painterResource(id = R.mipmap.ic_launcher)
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 
     private fun verificarPermissoes() {
