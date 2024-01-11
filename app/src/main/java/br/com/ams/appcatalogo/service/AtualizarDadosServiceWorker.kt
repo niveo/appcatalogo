@@ -10,7 +10,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.ams.appcatalogo.database.AppDatabase
 import br.com.ams.appcatalogo.database.VERSION_DB
-import br.com.ams.appcatalogo.retrofit.RetrofitConfig
+import br.com.ams.appcatalogo.retrofit.ICargaArquivo
 import com.blankj.utilcode.util.FileIOUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
@@ -27,6 +27,7 @@ const val TAG_ATUALIZAR_DADOS_WORK = "ATUALIZAR_DADOS_WORK"
 @HiltWorker
 class AtualizarDadosServiceWorker @AssistedInject constructor(
     private val providesRoomDatabase: AppDatabase,
+    private val provideCargaArquivo: ICargaArquivo,
     @Assisted private val appContext: Context,
     @Assisted private val workerParams: WorkerParameters,
 ) :
@@ -78,8 +79,10 @@ class AtualizarDadosServiceWorker @AssistedInject constructor(
                     File.separator + UUID.randomUUID().toString() + ".zip"
         )
 
-        val cag = RetrofitConfig.instance.getCargaArquivo().obterCarga()
+        val cag = provideCargaArquivo.obterCarga()
+
         val execute = cag.execute()
+
         if (execute.isSuccessful) {
             val isArquivoCriado =
                 FileIOUtils.writeFileFromIS(newFile, execute.body()!!.byteStream())
@@ -192,9 +195,6 @@ class AtualizarDadosServiceWorker @AssistedInject constructor(
                 registrosAtualizaTabelas.forEach { tabelaAtualiza ->
                     LogUtils.i(tabelaAtualiza.tabela, tabelaAtualiza.valores.size)
                     tabelaAtualiza.valores.forEach {
-                        if(tabelaAtualiza.tabela == "produto"){
-                            LogUtils.i(tabelaAtualiza.valores)
-                        }
                         try {
                             this.insert(tabelaAtualiza.tabela, SQLiteDatabase.CONFLICT_REPLACE, it)
                         } catch (e: Exception) {
