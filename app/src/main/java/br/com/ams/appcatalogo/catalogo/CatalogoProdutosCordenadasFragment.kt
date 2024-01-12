@@ -6,24 +6,41 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import br.com.ams.appcatalogo.R
-import br.com.ams.appcatalogo.catalogo.dataadapter.CatalogoProdutosCordenadasDataAdapter
-import br.com.ams.appcatalogo.common.Funcoes
-import br.com.ams.appcatalogo.databinding.CatalogoProdutosCordenadasFragmentBinding
+import br.com.ams.appcatalogo.common.ValorRealUtil
+import br.com.ams.appcatalogo.entity.Produto
 import br.com.ams.appcatalogo.viewsmodel.CatalogoProdutosCordenadasViewModel
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 
 class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
-
-    private lateinit var adapter: CatalogoProdutosCordenadasDataAdapter
-    private lateinit var binding: CatalogoProdutosCordenadasFragmentBinding
 
     private val viewModel: CatalogoProdutosCordenadasViewModel by activityViewModels()
 
@@ -32,45 +49,69 @@ class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = CatalogoProdutosCordenadasFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        adapter = CatalogoProdutosCordenadasDataAdapter(
-            object : CatalogoProdutosCordenadasDataAdapter.OnItemTouchListener {
-                override fun onDetalhar(view: View, position: Int) {
-                    ToastUtils.showLong(getString(R.string.nao_implementado))
-                    dismiss()
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MaterialTheme {
+                    CatalogoProdutosCordenadasListView()
                 }
-
-                override fun onPedido(view: View, position: Int) {
-                    ToastUtils.showLong(getString(R.string.nao_implementado))
-                }
-            })
-
-        Funcoes.configurarRecyclerDefault(
-            view.context,
-            binding.produtosCordenadasFragmentdialogRecycler,
-            adapter,
-            true
-        )
-
-
-        viewModel.registros.onEach {
-            if (it.isEmpty()) {
-                ToastUtils.showLong(getString(R.string.registros_nao_localizados))
-                dismiss()
-            } else {
-                adapter.carregarRegistros(it)
             }
-        }.launchIn(lifecycleScope)
-
-        viewModel.carregarRegistros(arguments?.getLongArray(EXTRA_PRODUTOS))
+        }
     }
 
+    @Composable
+    fun CatalogoProdutosCordenadasListView() {
+        val registros = viewModel.registros.collectAsState()
+
+        LaunchedEffect(key1 = Unit) {
+            viewModel.carregarRegistros(arguments?.getLongArray(EXTRA_PRODUTOS))
+        }
+
+        LazyColumn(
+            contentPadding = PaddingValues(5.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            itemsIndexed(items = registros.value) { _, value ->
+                CatalogoProdutosCordenadasListViewItem(value)
+                Divider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
+            }
+        }
+    }
+
+    @Composable
+    fun CatalogoProdutosCordenadasListViewItem(registro: Produto) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                Modifier
+                    .weight(1F)
+                    .fillMaxWidth()) {
+                Text(
+                    text = registro.descricao!!,
+                )
+                Text(
+                    text = ValorRealUtil.formatarValorReal(registro.valor!!),
+                    modifier = Modifier
+                        .padding(PaddingValues(end = 10.dp)),
+                    textAlign = TextAlign.End,
+                )
+            }
+            ButtonLancarProdutoPedidoView()
+        }
+    }
+
+    @Composable
+    fun ButtonLancarProdutoPedidoView() {
+        IconButton(onClick = { ToastUtils.showLong(R.string.nao_implementado) }) {
+            Icon(
+                Icons.Filled.ShoppingCart,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = stringResource(R.string.descricao_lancar_produto_pedido)
+            )
+        }
+    }
 
     override fun onResume() {
         super.onResume()

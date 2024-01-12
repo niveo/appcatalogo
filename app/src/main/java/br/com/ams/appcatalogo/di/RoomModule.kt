@@ -1,11 +1,9 @@
 package br.com.ams.appcatalogo.di
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.dao.CatalogoDao
 import br.com.ams.appcatalogo.dao.CatalogoPaginaDao
 import br.com.ams.appcatalogo.dao.ProdutoDao
@@ -19,8 +17,6 @@ import br.com.ams.appcatalogo.repository.ProdutoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton

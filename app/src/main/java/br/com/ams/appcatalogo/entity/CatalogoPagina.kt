@@ -2,9 +2,7 @@ package br.com.ams.appcatalogo.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "catalogo_pagina")
 class CatalogoPagina(

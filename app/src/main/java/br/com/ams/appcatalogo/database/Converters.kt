@@ -1,7 +1,7 @@
 package br.com.ams.appcatalogo.database
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.Date
 
 object Converters {
     @TypeConverter

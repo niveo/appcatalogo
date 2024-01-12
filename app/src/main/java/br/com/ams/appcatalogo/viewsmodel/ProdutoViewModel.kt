@@ -3,10 +3,8 @@ package br.com.ams.appcatalogo.viewsmodel
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import br.com.ams.appcatalogo.common.Constantes
-import br.com.ams.appcatalogo.entity.Catalogo
 import br.com.ams.appcatalogo.entity.Produto
 import br.com.ams.appcatalogo.repository.ProdutoRepository
-import com.blankj.utilcode.util.LogUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

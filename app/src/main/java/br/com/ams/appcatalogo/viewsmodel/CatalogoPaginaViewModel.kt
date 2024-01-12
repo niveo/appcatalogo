@@ -29,9 +29,9 @@ constructor(private val catalogoPaginaRepository: CatalogoPaginaRepository) :
     val registros = _registros.asStateFlow()
 
     fun carregarDadosView(codigo: Long, descricao: String, identificador: String) {
-        this._codigo = codigo;
-        this._descricao = descricao;
-        this._identificador = identificador;
+        this._codigo = codigo
+        this._descricao = descricao
+        this._identificador = identificador
         _registros.value = catalogoPaginaRepository.obterCatalogoPaginaMapeados(this.codigo)
     }
 }

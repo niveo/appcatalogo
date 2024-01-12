@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.common.Constantes
-import br.com.ams.appcatalogo.entity.CatalogoPagina
 import br.com.ams.appcatalogo.repository.ProdutoRepository
-import com.blankj.utilcode.util.LogUtils
 import com.example.imagekit.android.picasso_extension.createWithPicasso
 import com.imagekit.android.ImageKit
 import com.imagekit.android.entity.TransformationPosition

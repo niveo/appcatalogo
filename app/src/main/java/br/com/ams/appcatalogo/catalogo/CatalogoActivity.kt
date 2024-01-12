@@ -4,26 +4,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import br.com.ams.appcatalogo.ApplicationLocate
-import br.com.ams.appcatalogo.R
-import br.com.ams.appcatalogo.common.*
-import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
-import br.com.ams.appcatalogo.produto.ProdutoListaFragment
-import br.com.ams.appcatalogo.viewsmodel.CatalogoViewModel
-import com.auth0.android.Auth0
-import com.auth0.android.authentication.AuthenticationException
-import com.auth0.android.callback.Callback
-import com.auth0.android.provider.WebAuthProvider
-import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.SPUtils
-import com.blankj.utilcode.util.ToastUtils
-import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,10 +27,28 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import br.com.ams.appcatalogo.ApplicationLocate
+import br.com.ams.appcatalogo.R
+import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.entity.Catalogo
+import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
+import br.com.ams.appcatalogo.produto.ProdutoListaFragment
+import br.com.ams.appcatalogo.viewsmodel.CatalogoViewModel
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.auth0.android.Auth0
+import com.auth0.android.authentication.AuthenticationException
+import com.auth0.android.callback.Callback
+import com.auth0.android.provider.WebAuthProvider
+import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.ToastUtils
+import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @AndroidEntryPoint
 class CatalogoActivity : AppCompatActivity() {

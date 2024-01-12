@@ -1,9 +1,7 @@
 package br.com.ams.appcatalogo.repository
 
 import android.database.Cursor
-import androidx.lifecycle.LiveData
 import br.com.ams.appcatalogo.entity.Produto
-import kotlinx.coroutines.flow.Flow
 
 interface ProdutoRepository {
     fun obterProdutoCodigos(ids: List<Long>): List<Produto>

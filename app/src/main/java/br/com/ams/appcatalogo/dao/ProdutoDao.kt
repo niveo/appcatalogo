@@ -1,13 +1,9 @@
 package br.com.ams.appcatalogo.dao
 
 import android.database.Cursor
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import br.com.ams.appcatalogo.entity.Produto
-import kotlinx.coroutines.flow.Flow
 
 private const val QUERY_PRODUTOS_DO_CATALOGO = "select cpmpp.produtoId from catalogo, " +
         "catalogo_pagina as cp, " +

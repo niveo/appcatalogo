@@ -1,6 +1,5 @@
 package br.com.ams.appcatalogo.common
 
-import android.app.Activity
 import android.content.Context
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration

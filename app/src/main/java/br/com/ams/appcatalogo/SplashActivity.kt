@@ -2,13 +2,11 @@ package br.com.ams.appcatalogo
 
 import android.annotation.SuppressLint
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
@@ -18,8 +16,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.common.Constantes
@@ -36,9 +32,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
-import io.github.cdimascio.dotenv.dotenv
 import java.util.Date
-import javax.inject.Inject
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {

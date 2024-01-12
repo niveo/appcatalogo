@@ -1,9 +1,6 @@
 package br.com.ams.appcatalogo.common
 
-import com.blankj.utilcode.util.FileUtils
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PathUtils
-import com.blankj.utilcode.util.SPUtils
 
 class Config {
 

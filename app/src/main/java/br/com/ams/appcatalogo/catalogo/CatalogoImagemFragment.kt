@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.PointF
 import android.os.Bundle
 import android.view.GestureDetector
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -17,8 +16,6 @@ import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.databinding.FragmentCatalogoImagemBinding
 import br.com.ams.appcatalogo.viewsmodel.CatalogoImagemViewModel
-import br.com.ams.appcatalogo.viewsmodel.CatalogoPaginaViewModel
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.davemorrissey.labs.subscaleview.ImageSource
 import kotlinx.coroutines.flow.launchIn

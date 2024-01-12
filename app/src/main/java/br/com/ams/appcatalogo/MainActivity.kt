@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import br.com.ams.appcatalogo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

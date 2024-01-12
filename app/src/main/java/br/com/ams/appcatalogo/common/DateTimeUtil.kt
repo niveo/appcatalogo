@@ -3,7 +3,9 @@ package br.com.ams.appcatalogo.common
 import com.blankj.utilcode.util.TimeUtils
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 
 object DateTimeUtil {
 

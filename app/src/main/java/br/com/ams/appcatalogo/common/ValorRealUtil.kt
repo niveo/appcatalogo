@@ -6,7 +6,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.ParseException
-import java.util.*
+import java.util.Locale
 
 object ValorRealUtil {
 
@@ -47,7 +47,7 @@ object ValorRealUtil {
     }
 
 
-    fun formatarValorReal(value: Double?): String? {
+    fun formatarValorReal(value: Double?): String {
         return formatarValorReal(value, false)
     }
 
@@ -59,7 +59,7 @@ object ValorRealUtil {
         return decimalFormat.format(value ?: 0)
     }
 
-    fun formatarValorReal(value: Double? = 0.0, inicial: Boolean): String? {
+    fun formatarValorReal(value: Double? = 0.0, inicial: Boolean): String {
         val decimalFormat: NumberFormat = DecimalFormat(
             (if (inicial) "R$ " else "") + "#,##0.00",
             DecimalFormatSymbols(Locale("pt", "BR"))
@@ -115,7 +115,7 @@ object ValorRealUtil {
         formato: String?,
         simbolo: String?,
         inicialSimbolo: Boolean
-    ): String? {
+    ): String {
         val df =
             DecimalFormat(formato ?: "#,##0.00")
         var ret = (simbolo ?: "") + df.format(value)

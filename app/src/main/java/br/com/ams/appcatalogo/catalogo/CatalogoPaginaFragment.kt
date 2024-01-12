@@ -23,25 +23,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.catalogo.utils.UtilCatalogo
-import br.com.ams.appcatalogo.viewsmodel.CatalogoPaginaViewModel
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.entity.CatalogoPagina
+import br.com.ams.appcatalogo.viewsmodel.CatalogoPaginaViewModel
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
@@ -179,7 +179,7 @@ class CatalogoPaginaFragment : DialogFragment() {
             show(fm, DIALOG_TAG)
         }
     }
- 
+
     private fun showMenu(
         v: View,
         @MenuRes menuRes: Int,

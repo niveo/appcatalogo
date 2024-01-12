@@ -50,7 +50,7 @@ class ProdutoListaFragment : DialogFragment() {
 
         viewModel.registros.onEach {
             LogUtils.w(it)
-            binding.fragmentProdutoListaRegistros.text = "${it.size}";
+            binding.fragmentProdutoListaRegistros.text = "${it.size}"
             adapter.carregarRegistros(it)
         }.launchIn(lifecycleScope)
     }
