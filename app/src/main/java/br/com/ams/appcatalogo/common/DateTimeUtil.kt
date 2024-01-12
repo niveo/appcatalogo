@@ -121,6 +121,14 @@ object DateTimeUtil {
         return df.format(date)
     }
 
+    fun stringDataISO8601(date: String): Date {
+        val tz: TimeZone = TimeZone.getTimeZone("UTC")
+        val df: DateFormat =
+            SimpleDateFormat(ISO_8601BASIC_DATE_PATTERN)
+        df.timeZone = tz
+        return df.parse(date)
+    }
+
     fun dataPatterBR(data: Any?, format: String?): String? {
         return if (data == null || data === "") "" else TimeUtils.date2String(
             data as Date?,

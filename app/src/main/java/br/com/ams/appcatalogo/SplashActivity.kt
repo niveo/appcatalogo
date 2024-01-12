@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.common.Constantes
+import br.com.ams.appcatalogo.common.DateTimeUtil
 import br.com.ams.appcatalogo.common.DialogsUtils
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationException
@@ -34,7 +35,9 @@ import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.ToastUtils
 import io.github.cdimascio.dotenv.dotenv
+import java.util.Date
 import javax.inject.Inject
 
 @SuppressLint("CustomSplashScreen")
@@ -69,7 +72,6 @@ class SplashActivity : AppCompatActivity() {
 
     @Composable
     fun ImageViewContent() {
-        val image = painterResource(id = R.mipmap.ic_launcher)
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -134,15 +136,26 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun iniciarMain() {
-        // loginWithBrowser()
         val sp = SPUtils.getInstance()
-        if (sp.contains(Constantes.KEY_TOKEN_BEARER) && !sp.getString(Constantes.KEY_TOKEN_BEARER)
-                .isNullOrBlank()
+        if (!sp.contains(Constantes.KEY_TOKEN_BEARER) ||
+            sp.getString(
+                Constantes.KEY_TOKEN_BEARER
+            ).isNullOrBlank()
+            || tokenExpirado()
         ) {
-            carregarViewPrincipal()
-        } else {
             loginWithBrowser()
+        } else {
+            carregarViewPrincipal()
         }
+    }
+
+    fun tokenExpirado(): Boolean {
+        val sp = SPUtils.getInstance()
+        if (!sp.contains(Constantes.KEY_TOKEN_EXPIRESAT))  return true
+        val expiresAt = sp.getString(Constantes.KEY_TOKEN_EXPIRESAT, "")
+        if (expiresAt.isNullOrEmpty())   return true
+        val dataExpiresAt = DateTimeUtil.stringDataISO8601(expiresAt)
+        return Date().after(dataExpiresAt)
     }
 
     private fun loginWithBrowser() {
@@ -156,7 +169,9 @@ class SplashActivity : AppCompatActivity() {
                 // Called when there is an authentication failure
                 override fun onFailure(exception: AuthenticationException) {
                     // Something went wrong!
-                    finish()
+                    LogUtils.e(exception.message)
+                    ToastUtils.showLong(R.string.erro_processo)
+                    //finish()
                 }
 
                 // Called when authentication completed successfully
@@ -166,6 +181,10 @@ class SplashActivity : AppCompatActivity() {
                     val sp = SPUtils.getInstance()
                     sp.put(Constantes.KEY_TOKEN_BEARER, credentials.accessToken)
                     sp.put(Constantes.KEY_TOKEN_USER_ID, credentials.user.getId())
+                    sp.put(
+                        Constantes.KEY_TOKEN_EXPIRESAT,
+                        DateTimeUtil.dataStringISO8601(credentials.expiresAt)
+                    )
                     carregarViewPrincipal()
                 }
             })
