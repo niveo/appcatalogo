@@ -101,8 +101,6 @@ class CatalogoImagemFragment : DialogFragment() {
         }.launchIn(lifecycleScope)
     }
 
-
-
     override fun getTheme(): Int {
         return R.style.DialogTheme
     }

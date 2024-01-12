@@ -11,28 +11,59 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.fragment.app.activityViewModels
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.entity.Catalogo
+import br.com.ams.appcatalogo.entity.CatalogoPagina
 import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
 import br.com.ams.appcatalogo.produto.ProdutoListaFragment
+import br.com.ams.appcatalogo.ui.theme.CatalogoApplicationTheme
+import br.com.ams.appcatalogo.viewsmodel.CatalogoPaginaViewModel
 import br.com.ams.appcatalogo.viewsmodel.CatalogoViewModel
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
@@ -53,32 +84,65 @@ import org.greenrobot.eventbus.ThreadMode
 @AndroidEntryPoint
 class CatalogoActivity : AppCompatActivity() {
     private val viewModel: CatalogoViewModel by viewModels()
+    private val catalogoPaginaViewModel: CatalogoPaginaViewModel by viewModels()
 
     private var account: Auth0 = Auth0(
         ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_CLIENT_ID],
         ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_DOMAIN],
     )
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
-                CatalogoListView { catalogoSelecionado ->
-                    CatalogoPaginaFragment.newInstance(
-                        catalogoSelecionado.id,
-                        catalogoSelecionado.descricao,
-                        catalogoSelecionado.identificador!!
-                    ).openDialog(supportFragmentManager)
-                }
+            CatalogoApplicationTheme {
+                val openDialogCatalogoPagina = remember { mutableStateOf(false) }
+                val catalogo = remember { mutableStateOf<Catalogo?>(null) }
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(stringResource(R.string.app_name))
+                            }
+                        )
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(onClick = {
+                            viewModel.atualizarRegistros(this, this)
+                        }) {
+                            Icon(
+                                Icons.Default.Refresh, contentDescription = "Atualizar"
+                            )
+                        }
+                    },
+                    content = {
+                        CatalogoListView(Modifier.padding(it)) { catalogoSelecionado ->
+                            catalogo.value = catalogoSelecionado
+                            openDialogCatalogoPagina.value = true
+                        }
+                        when {
+                            openDialogCatalogoPagina.value -> {
+                                CatalogoPaginaCompose(
+                                    catalogo.value!!,
+                                    catalogoPaginaViewModel
+                                ).CatalogoPaginaDialog {
+                                    openDialogCatalogoPagina.value = false
+                                }
+                            }
+                        }
+                    }
+                )
             }
         }
         EventBus.getDefault().register(this)
     }
 
+
     @Composable
-    fun CatalogoListView(onItemClick: (Catalogo) -> Unit) {
+    fun CatalogoListView(modifier: Modifier, onItemClick: (Catalogo) -> Unit) {
         val registros = viewModel.registros.collectAsState()
         LazyColumn(
+            modifier = modifier,
             contentPadding = PaddingValues(5.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -140,12 +204,6 @@ class CatalogoActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_central, menu)
-        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

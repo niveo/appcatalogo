@@ -28,39 +28,25 @@
             android:name=".MainActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
-
+            android:theme="@style/Theme.AppCatalogo"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".SplashActivity"
             android:alwaysRetainTaskState="true"
             android:exported="true"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Theme.AppCatalogo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".catalogo.CatalogoActivity"
             android:exported="true"
             android:label="@string/label_catalogos"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".catalogo.CatalogoImagemActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />

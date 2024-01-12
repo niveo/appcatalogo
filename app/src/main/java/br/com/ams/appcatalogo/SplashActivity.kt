@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.DateTimeUtil
 import br.com.ams.appcatalogo.common.DialogsUtils
+import br.com.ams.appcatalogo.ui.theme.CatalogoApplicationTheme
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
@@ -35,7 +37,7 @@ import com.blankj.utilcode.util.ToastUtils
 import java.util.Date
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : ComponentActivity() {
 
     var account: Auth0 = Auth0(
         ApplicationLocate.instance.dotenv[Constantes.COM_AUTH0_CLIENT_ID],
@@ -45,7 +47,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            CatalogoApplicationTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     ImageViewContent()
                 }

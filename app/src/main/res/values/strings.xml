@@ -18,4 +18,5 @@
     <string name="com_auth0_scheme">demo</string>
     <string name="com_auth0_domain">dev-e68si34s5lecmupl.us.auth0.com</string>
     <string name="descricao_lancar_produto_pedido">Lançar Produto Pedido</string>
+    <string name="title_activity_catalogo_pagina">CatalogoPaginaActivity</string>
 </resources>

@@ -35,6 +35,7 @@ import androidx.fragment.app.activityViewModels
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.ValorRealUtil
 import br.com.ams.appcatalogo.entity.Produto
+import br.com.ams.appcatalogo.ui.theme.CatalogoApplicationTheme
 import br.com.ams.appcatalogo.viewsmodel.CatalogoProdutosCordenadasViewModel
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -52,7 +53,7 @@ class CatalogoProdutosCordenadasFragment : BottomSheetDialogFragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MaterialTheme {
+                CatalogoApplicationTheme {
                     CatalogoProdutosCordenadasListView()
                 }
             }

@@ -21,6 +21,8 @@ class CatalogoViewModel @Inject constructor(
     private val catalogoRepository: CatalogoRepository
 ) : ViewModel() {
 
+    var atualizandoRegistros: Boolean = false
+
     private var _registros = MutableStateFlow<List<Catalogo>>(arrayListOf())
     val registros = _registros.asStateFlow()
 
@@ -37,6 +39,9 @@ class CatalogoViewModel @Inject constructor(
         val mWorkManager = WorkManager.getInstance(context)
         mWorkManager.getWorkInfoByIdLiveData(id)
             .observe(lifecycleOwner, Observer {
+                if(it.state == WorkInfo.State.RUNNING){
+                    atualizandoRegistros = true
+                }
                 if (it.state.isFinished) {
                     if(it.state == WorkInfo.State.FAILED){
                         ToastUtils.showLong(R.string.erro_processo)
@@ -44,6 +49,7 @@ class CatalogoViewModel @Inject constructor(
                         carregarRegistros()
                         ToastUtils.showLong(R.string.registros_atualizados)
                     }
+                    atualizandoRegistros = false
                 }
             })
     }
