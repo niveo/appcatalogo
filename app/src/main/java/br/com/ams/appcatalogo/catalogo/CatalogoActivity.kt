@@ -25,6 +25,8 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -77,11 +79,14 @@ class CatalogoActivity : AppCompatActivity() {
     fun CatalogoListView(onItemClick: (Catalogo) -> Unit) {
         val registros = viewModel.registros.collectAsState()
         LazyColumn(
-            contentPadding = PaddingValues(horizontal = 5.dp, vertical = 5.dp)
+            contentPadding = PaddingValues(5.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(count = registros.value.size) { countValue ->
                 val registro = registros.value[countValue]
-                CatalogoListViewItem(registro, onItemClick)
+                Box(modifier = Modifier.padding(5.dp)) {
+                    CatalogoListViewItem(registro, onItemClick)
+                }
             }
         }
     }
@@ -124,6 +129,7 @@ class CatalogoActivity : AppCompatActivity() {
                 ProdutoListaFragment.newInstance(event.bundle)
                     .openDialog(supportFragmentManager)
             }
+
             else -> {
                 LogUtils.w("Identificador ${event.identificador} não localizado.")
             }
