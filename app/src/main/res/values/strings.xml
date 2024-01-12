@@ -17,6 +17,4 @@
     <string name="digitosNumberSigned">0123456789</string>
     <string name="com_auth0_scheme">demo</string>
     <string name="com_auth0_domain">dev-e68si34s5lecmupl.us.auth0.com</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

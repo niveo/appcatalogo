@@ -100,6 +100,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
 
+    implementation ("io.coil-kt:coil-compose:2.4.0")
+
     // Retrofit & Gson
     implementation("com.google.code.gson:gson:2.10.1")
 

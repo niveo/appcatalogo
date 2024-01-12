@@ -105,7 +105,7 @@ class AtualizarDadosServiceWorker @AssistedInject constructor(
 
             }
         }
-        return null
+        throw Exception("Erro baixar arquivo.")
     }
 
     private fun carregarValores(file: File) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.entity.Catalogo
@@ -43,8 +44,12 @@ class CatalogoViewModel @Inject constructor(
         mWorkManager.getWorkInfoByIdLiveData(id)
             .observe(lifecycleOwner, Observer {
                 if (it.state.isFinished) {
-                    carregarRegistros()
-                    ToastUtils.showLong(R.string.registros_atualizados)
+                    if(it.state == WorkInfo.State.FAILED){
+                        ToastUtils.showLong(R.string.erro_processo)
+                    } else {
+                        carregarRegistros()
+                        ToastUtils.showLong(R.string.registros_atualizados)
+                    }
                 }
             })
     }
