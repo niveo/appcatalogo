@@ -76,8 +76,5 @@ class ApplicationLocate : Application(), Configuration.Provider  {
     companion object {
         lateinit var instance: ApplicationLocate
             private set
-
-      /*  lateinit var component: AppComponent
-            private set*/
     }
 }

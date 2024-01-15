@@ -1,8 +1,6 @@
 package br.com.ams.appcatalogo.catalogo
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,57 +9,35 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import androidx.fragment.app.activityViewModels
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.entity.Catalogo
-import br.com.ams.appcatalogo.entity.CatalogoPagina
-import br.com.ams.appcatalogo.model.bus.MessageBusIdentificador
-import br.com.ams.appcatalogo.produto.ProdutoListaFragment
 import br.com.ams.appcatalogo.ui.theme.CatalogoApplicationTheme
 import br.com.ams.appcatalogo.viewsmodel.CatalogoPaginaViewModel
 import br.com.ams.appcatalogo.viewsmodel.CatalogoViewModel
@@ -77,9 +53,6 @@ import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 @AndroidEntryPoint
 class CatalogoActivity : AppCompatActivity() {
@@ -98,6 +71,7 @@ class CatalogoActivity : AppCompatActivity() {
             CatalogoApplicationTheme {
                 val openDialogCatalogoPagina = remember { mutableStateOf(false) }
                 val catalogo = remember { mutableStateOf<Catalogo?>(null) }
+                val atualizando by viewModel.atualizandoRegistros.collectAsState()
                 Scaffold(
                     topBar = {
                         TopAppBar(
@@ -107,7 +81,7 @@ class CatalogoActivity : AppCompatActivity() {
                         )
                     },
                     floatingActionButton = {
-                        FloatingActionButton(onClick = {
+                        ElevatedButton(enabled = !atualizando, onClick = {
                             viewModel.atualizarRegistros(this, this)
                         }) {
                             Icon(
@@ -124,6 +98,7 @@ class CatalogoActivity : AppCompatActivity() {
                             openDialogCatalogoPagina.value -> {
                                 CatalogoPaginaCompose(
                                     catalogo.value!!,
+                                    supportFragmentManager,
                                     catalogoPaginaViewModel
                                 ).CatalogoPaginaDialog {
                                     openDialogCatalogoPagina.value = false
@@ -134,7 +109,6 @@ class CatalogoActivity : AppCompatActivity() {
                 )
             }
         }
-        EventBus.getDefault().register(this)
     }
 
 
@@ -185,43 +159,6 @@ class CatalogoActivity : AppCompatActivity() {
             }
         }
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEventMainCentralActivity(event: MessageBusIdentificador) {
-        when (event.identificador) {
-            Constantes.NT_CONSULTA_PRODUTO -> {
-                ProdutoListaFragment.newInstance(event.bundle)
-                    .openDialog(supportFragmentManager)
-            }
-
-            else -> {
-                LogUtils.w("Identificador ${event.identificador} não localizado.")
-            }
-        }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        EventBus.getDefault().unregister(this)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_central_atualizar_registros -> {
-                viewModel.atualizarRegistros(this, this)
-                true
-            }
-
-            R.id.menu_central_logout -> {
-                logout()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
 
     private fun logout() {
         WebAuthProvider.logout(account)

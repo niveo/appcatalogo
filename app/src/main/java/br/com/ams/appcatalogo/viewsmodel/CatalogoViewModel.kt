@@ -10,6 +10,7 @@ import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.entity.Catalogo
 import br.com.ams.appcatalogo.repository.CatalogoRepository
 import br.com.ams.appcatalogo.service.AtualizarDadosServiceWorkerStarter
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,9 @@ class CatalogoViewModel @Inject constructor(
     private val catalogoRepository: CatalogoRepository
 ) : ViewModel() {
 
-    var atualizandoRegistros: Boolean = false
+
+    private var _atualizandoRegistros = MutableStateFlow<Boolean>(false)
+    val atualizandoRegistros = _atualizandoRegistros.asStateFlow()
 
     private var _registros = MutableStateFlow<List<Catalogo>>(arrayListOf())
     val registros = _registros.asStateFlow()
@@ -39,8 +42,9 @@ class CatalogoViewModel @Inject constructor(
         val mWorkManager = WorkManager.getInstance(context)
         mWorkManager.getWorkInfoByIdLiveData(id)
             .observe(lifecycleOwner, Observer {
+
                 if(it.state == WorkInfo.State.RUNNING){
-                    atualizandoRegistros = true
+                    _atualizandoRegistros.value = true
                 }
                 if (it.state.isFinished) {
                     if(it.state == WorkInfo.State.FAILED){
@@ -49,8 +53,9 @@ class CatalogoViewModel @Inject constructor(
                         carregarRegistros()
                         ToastUtils.showLong(R.string.registros_atualizados)
                     }
-                    atualizandoRegistros = false
+                    _atualizandoRegistros.value = false
                 }
+                LogUtils.w(atualizandoRegistros)
             })
     }
 }

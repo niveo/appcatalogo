@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.fragment.app.FragmentManager
 import br.com.ams.appcatalogo.ApplicationLocate
 import br.com.ams.appcatalogo.R
 import br.com.ams.appcatalogo.common.Constantes
@@ -38,6 +39,7 @@ import coil.request.ImageRequest
 
 class CatalogoPaginaCompose(
     catalogo: Catalogo,
+    val fragmentManager: FragmentManager,
     private val viewModel: CatalogoPaginaViewModel
 ) {
 
@@ -62,14 +64,14 @@ class CatalogoPaginaCompose(
                         .background(Color.White)
                 )
                 CatalogoPaginaView {
-                    /*
-                     CatalogoImagemFragment.newInstance(
-                                                viewModel.identificador,
-                                                registro.name!!,
-                                                registro.catalogoId!!,
-                                                registro.id,
-                                            ).openDialog(parentFragmentManager)
-                     */
+
+                    CatalogoImagemFragment.newInstance(
+                        viewModel.identificador,
+                        it.name!!,
+                        it.catalogoId!!,
+                        it.id,
+                    ).openDialog(fragmentManager)
+
                 }
             }
         }

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.StrictMode
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.common.Constantes
 import br.com.ams.appcatalogo.common.DateTimeUtil
-import br.com.ams.appcatalogo.common.DialogsUtils
 import br.com.ams.appcatalogo.ui.theme.CatalogoApplicationTheme
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationException
@@ -46,6 +44,7 @@ class SplashActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             CatalogoApplicationTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
@@ -107,22 +106,8 @@ class SplashActivity : ComponentActivity() {
                             "Negadas Para Sempre: " + deniedForever.joinToString("\t")
                     }
                     if (!msg.equals("") && !AppUtils.isAppDebug()) {
-                        if (!SPUtils.getInstance().getBoolean("IGNORAR_PERMISSOES", false)) {
-                            DialogsUtils.showConfirmacao(
-                                this@SplashActivity,
-                                "Existe Permissões Negadas",
-                                "Deseja ir para as permisões?\n" + msg,
-                                {
-                                    if (it) {
-                                        PermissionUtils.launchAppDetailsSettings()
-                                    } else {
-                                        SPUtils.getInstance().put("IGNORAR_PERMISSOES", true)
-                                        iniciarMain()
-                                    }
-                                })
-                        } else {
-                            iniciarMain()
-                        }
+                        ToastUtils.showLong(msg)
+                        PermissionUtils.launchAppDetailsSettings()
                     } else {
                         iniciarMain()
                     }
@@ -147,9 +132,9 @@ class SplashActivity : ComponentActivity() {
 
     fun tokenExpirado(): Boolean {
         val sp = SPUtils.getInstance()
-        if (!sp.contains(Constantes.KEY_TOKEN_EXPIRESAT))  return true
+        if (!sp.contains(Constantes.KEY_TOKEN_EXPIRESAT)) return true
         val expiresAt = sp.getString(Constantes.KEY_TOKEN_EXPIRESAT, "")
-        if (expiresAt.isNullOrEmpty())   return true
+        if (expiresAt.isNullOrEmpty()) return true
         val dataExpiresAt = DateTimeUtil.stringDataISO8601(expiresAt)
         return Date().after(dataExpiresAt)
     }
