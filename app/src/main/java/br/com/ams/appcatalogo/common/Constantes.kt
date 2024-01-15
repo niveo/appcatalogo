@@ -9,6 +9,8 @@ object Constantes {
 
     const val KEY_TOKEN_BEARER = "TOKEN_BEARER"
     const val KEY_TOKEN_USER_ID = "TOKEN_USER_ID"
+    const val KEY_TOKEN_EXPIRESAT = "TOKEN_EXPIRESAT"
+
 
     const val NT_CONSULTA_PRODUTO = "NT_CONSULTA_PRODUTO"
 

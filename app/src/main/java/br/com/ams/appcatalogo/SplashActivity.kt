@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.StrictMode
 import br.com.ams.appcatalogo.catalogo.CatalogoActivity
 import br.com.ams.appcatalogo.common.Constantes
+import br.com.ams.appcatalogo.common.DateTimeUtil
 import br.com.ams.appcatalogo.common.DialogsUtils
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationException
@@ -19,6 +20,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.SPUtils
 import io.github.cdimascio.dotenv.dotenv
+import java.util.Date
 import javax.inject.Inject
 
 @SuppressLint("CustomSplashScreen")
@@ -99,15 +101,27 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun iniciarMain() {
-        // loginWithBrowser()
         val sp = SPUtils.getInstance()
-        if (sp.contains(Constantes.KEY_TOKEN_BEARER) && !sp.getString(Constantes.KEY_TOKEN_BEARER)
-                .isNullOrBlank()
+        if (!sp.contains(Constantes.KEY_TOKEN_BEARER) ||
+            sp.getString(
+                Constantes.KEY_TOKEN_BEARER
+            ).isNullOrBlank()
+            || tokenExpirado()
         ) {
-            carregarViewPrincipal()
-        } else {
             loginWithBrowser()
+        } else {
+            carregarViewPrincipal()
         }
+    }
+
+
+    fun tokenExpirado(): Boolean {
+        val sp = SPUtils.getInstance()
+        if (!sp.contains(Constantes.KEY_TOKEN_EXPIRESAT)) return true
+        val expiresAt = sp.getString(Constantes.KEY_TOKEN_EXPIRESAT, "")
+        if (expiresAt.isNullOrEmpty()) return true
+        val dataExpiresAt = DateTimeUtil.stringDataISO8601(expiresAt)
+        return Date().after(dataExpiresAt)
     }
 
     private fun loginWithBrowser() {
